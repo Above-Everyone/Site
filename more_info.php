@@ -1,17 +1,15 @@
-<!--
-=========================================================
-* Soft UI Dashboard - v1.0.7
-=========================================================
+<?php
 
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
+include_once("yomarket/market_lib.php");
 
-=========================================================
+$info = $_COOKIE['ym_user_info'] ?? "";
+$MORE_INFO_PAGE_PROFILE = "";
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+if(!empty($info)) { 
+    $MORE_INFO_PAGE_PROFILE = new Profile($info);
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -118,10 +116,10 @@ h1 {
           </div>
           <div class="card-body p-3">
                 <?php
-                    ini_set('display_errors', 0);
-                    ini_set('display_startup_errors', 0);
-                    // error_reporting(E_ALL);
-                    include_once("yomarket.php");
+                    ini_set('display_errors', 1);
+                    ini_set('display_startup_errors', 1);
+                    error_reporting(E_ALL);
+
                     $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
                     $agent = str_replace(" ", "_", $_SERVER["HTTP_USER_AGENT"]);
                     $agent = str_replace(";", "-", $agent);
@@ -129,35 +127,33 @@ h1 {
                     if(array_key_exists("iid", $_GET))
                     {
                         $itemID = $_GET['iid'];
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
 
                         if(!isset($_GET['iid']) || empty($itemID))
                             die("[ X ] Fill out GET parameters to continue...!");
+                            
+                        $items = new Items();
+                        $r = $items->searchItem($itemID, $ip."&agent=". $agent);
 
-                        $eng = new YoMarket();
-                        $r = $eng->searchItem($itemID, "");
-
-                        if($r->type == ResponseType::API_FAILURE || $r->type == ResponseType::NONE)
+                        if($r->type == ResponseType::REQ_FAILED || $r->type == ResponseType::NONE)
                         {
-                            var_dump($r);
                             echo "<p>Error, Unable to connect to YoMarket's API. Please try again (Try using all lowercase)</p><br /><p>This is a common bug we are working on fixing....!</p>";
                         } else if($r->type == ResponseType::EXACT)
                         {
                             echo '<center><form method="post"><div class="result-box">';
                             echo '<div class="img-box">';
-                            echo '<img width="200" height="200" src="'. $r->result->url. '"/>';
+                            echo '<img width="200" height="200" src="'. $r->results->url. '"/>';
                             echo '</div> ';
                             echo '<div class="result-gap"></div>';
                             echo '<div class="info-box">';
-                            echo '<h1>'. $r->result->name.'</h1>';
-                            echo '<p class="fit">ID: '. $r->result->id. '</p>';
-                            echo '<p class="fit">Price: '. $r->result->price. '</p>';
-                            echo '<p class="fit">Update: '. $r->result->update .'</p>';
-                            echo '<p class="fit">In-Store: '. ($r->result->in_store == "" ? $r->result->in_store: "N/A") .'</p>';
-                            echo '<p class="fit">Store Price: '. ($r->result->store_price == "" ? $r->result->store_price: "N/A"). '</p>';
-                            echo '<p class="fit">Gender: '. ($r->result->gender == "" ? $r->result->gender: "N/A"). '</p>';
-                            echo '<p class="fit">XP: '. ($r->result->xp == "" ? $r->result->xp: "N/A"). '</p>';
-                            echo '<p class="fit">Category: '. ($r->result->category == "" ? $r->result->category: "N/A"). '</p>';
+                            echo '<h1>'. $r->results->name.'</h1>';
+                            echo '<p class="fit">ID: '. $r->results->id. '</p>';
+                            echo '<p class="fit">Price: '. $r->results->price. '</p>';
+                            echo '<p class="fit">Update: '. $r->results->update .'</p>';
+                            echo '<p class="fit">In-Store: '. ($r->results->in_store == "" ? $r->results->in_store: "N/A") .'</p>';
+                            echo '<p class="fit">Store Price: '. ($r->results->store_price == "" ? $r->results->store_price: "N/A"). '</p>';
+                            echo '<p class="fit">Gender: '. ($r->results->gender == "" ? $r->results->gender: "N/A"). '</p>';
+                            echo '<p class="fit">XP: '. ($r->results->xp == "" ? $r->results->xp: "N/A"). '</p>';
+                            echo '<p class="fit">Category: '. ($r->results->category == "" ? $r->results->category: "N/A"). '</p>';
                             echo '<div class="mb-3"><input type="text" class="form-control" placeholder="New Price (Ex: 2m)" aria-label="Name" aria-describedby="email-addon" id="new_price" name="new_price"></div>';
                             echo '<div class="form-group mb-4"><div class="col-sm-12"><input style="width: 200px;" type="submit" class="fit btn btn-success" id="price_btn" name="price_btn" value="Suggest"/></div></div>';
                             echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="#">Request Price Check</a></div></div>';
@@ -168,12 +164,11 @@ h1 {
                             echo '<div style="height: 50px;"></div>';
                             echo '<div class="log-box">';
                             echo '<center><h1>Yoworld.Info\'s Price Change History</h1>';
-                            foreach($r->result->yw_db_price as $price) 
+                            foreach($r->results->ywinfo_prices as $price) 
                             {
-                                $info = explode(",", $price);
                                 echo '<div stlye="display: inline-block">';
-                                echo '<p class="fit-price">Price: '. $info[0]. ' | </p>';
-                                echo '<p class="fit-price">Update: '. $info[3]. '</p>';
+                                echo '<p class="fit-price">Price: '. $price->price. ' | </p>';
+                                echo '<p class="fit-price">Update: '. $price->timestamp. '</p>';
                                 echo '</div>';
                             }
                             echo '</center></div>';
@@ -194,22 +189,31 @@ h1 {
                         if(!isset($_GET['iid']) || empty($itemID))
                             die("[ X ] Fill out GET parameters to continue...!");
                         
-                        $eng = new YoMarket();
-                        $r = $eng->searchItem($itemID, "");
+                        $items = new Items();
+                        $r = $items->searchItem($itemID, $ip."&agent=". $agent);
 
-                        $change_r = $eng->change_price($r->result, $n_price, $ip);
+                        if(empty($info)) {
+                            echo "<center><p>Error, You must be signed in to suggest a price!</p></center>";
+                            return;
+                        }
+
+                        if(!in_array(Badges::ADMIN, $MORE_INFO_PAGE_PROFILE->badges) && !in_array(Badges::OWNER, $MORE_INFO_PAGE_PROFILE->badges)) {
+                            echo "<center><p>Error, You Aren't an admin to change prices! </p><center>";
+                            return;
+                        }
+                        
+                        if($r->type != ResponseType::EXACT) {
+                            echo "<center><p>Error, Unable to find item!<br />Something went wrong. Contact an admin!</p><center>";
+                            return;
+                        }
+
+                        $change_r = $items->changePrice($r->results, $n_price, $MORE_INFO_PAGE_PROFILE->username, $ip);
                         
                         if($change_r->type == ResponseType::ITEM_UPDATED)
                         {
                             // $format = YoGuide::format_change_log($ip, $itemID, $r->result->price, $n_price);
                             // YoGuide::send_post_req((new YoGuide())->CHANGE_LOG_URL, $format);
-                            echo "<center><p>Item ". $r->result->name. " successfully updated....!</p><center>";
-                        } else if($r->type == ResponseType::FAILED_TO_UPDATE)
-                        {
-                            // $format = YoGuide::format_suggestion_log($ip, $itemID, $r->result->price, $n_price);
-                            // YoGuide::send_post_req((new YoGuide())->SUGGEST_LOG_URL, $format);
-                            YoMarket::suggest_price($r->result, $n_price, $ip);
-                            echo "<center><p>Price Suggestion sent to YoGuide Admins....!</p><center>";
+                            echo "<center><p>Item ". $r->results->name. " successfully updated....!</p><center>";
                         }
                     }
                 ?>

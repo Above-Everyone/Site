@@ -156,19 +156,19 @@ font-size: 20px;
                 ini_set('display_errors', 1);
                 ini_set('display_startup_errors', 1);
                 error_reporting(E_ALL);
-                include_once("yomarket.php");
+                include_once("yomarket/market_lib.php");
 
                 $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? "";
                 $agent = str_replace(" ", "_", $_SERVER["HTTP_USER_AGENT"] ?? "");
                 $agent = str_replace(";", "-", $agent);
 
-                $logs = (new YoMarket())->price_logs();
-
-                $reversed = array_reverse($logs->result);
+                $items = new Items();
+                $p_logs = $items->reqPriceLogs();
+                $reversed = array_reverse($p_logs->results);
                 
                 foreach($reversed as $log)
                 {
-                    $t = "https://yw-web.yoworld.com/cdn/items/". substr($log->query, 0, 2). "/". substr($log->query, 2, 2). "/". $log->query. "/". $log->query. "_60_60.gif";
+                    $t = "https://yw-web.yoworld.com/cdn/items/". substr($log->item_id, 0, 2). "/". substr($log->item_id, 2, 2). "/". $log->item_id. "/". $log->item_id. "_60_60.gif";
                     echo '<tr>';
                     echo '<td>';
                     echo '<div class="d-flex px-2 py-1">';
@@ -176,7 +176,7 @@ font-size: 20px;
                     echo '<img src="'. $t. '" class="avatar avatar-sm me-3" alt="user1">';
                     echo '</div>';
                     echo '<div class="d-flex flex-column justify-content-center">';
-                    echo '<p class="text-xs text-secondary mb-0">'. $log->query. '</p>';
+                    echo '<p class="text-xs text-secondary mb-0">'. $log->item_id. '</p>';
                     echo '</div>';
                     echo '</div>';
                     echo '<td>';

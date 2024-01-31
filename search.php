@@ -144,14 +144,13 @@ table, th, td {
                 <div class="form-group mb-4"><div class="col-sm-12"><input type="submit" class="btn btn-success" style="width: 100mw" id="search_item" name="search_item" value="Search"/></div></div>
             </form>
                 <?php
-                    ini_set('display_errors', 0);
-                    ini_set('display_startup_errors', 0);
-                    // error_reporting(E_ALL);
-                    include_once("yomarket.php");
+                    ini_set('display_errors', 1);
+                    ini_set('display_startup_errors', 1);
+                    error_reporting(E_ALL);
+                    include_once("yomarket/item_lib.php");
                     $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
                     $agent = str_replace(" ", "_", $_SERVER["HTTP_USER_AGENT"]);
                     $agent = str_replace(";", "-", $agent);
-                    $eng = new YoMarket();
                     
                     if(array_key_exists("search_item", $_POST))
                     {
@@ -160,26 +159,26 @@ table, th, td {
                         if(!isset($_POST['item_query']) || empty($itemID))
                             die("[ X ] Fill out GET parameters to continue...!");
 
-                        $r = $eng->searchItem($itemID, $ip."&agent=". $agent);
-
-                        if($r->type == ResponseType::API_FAILURE || $r->type == ResponseType::NONE)
+                        $items = new Items();
+                        $r = $items->searchItem($itemID, $ip."&agent=". $agent);
+                        
+                        if($r->type == ResponseType::REQ_FAILED || $r->type == ResponseType::NONE)
                         {
-                            var_dump($r);
                             echo "<p>Error, Unable to connect to YoMarket's API. Please try again (Try using all lowercase)</p><br /><p>This is a common bug we are working on fixing....!</p>";
                         } else if($r->type == ResponseType::EXACT)
                         {
                             echo '<center><form method="post"><div class="item_box" style="background-color: #fff;">';
                             echo '<div style="display: inline-block">';
-                            echo '<img width="150" height="150" src="'. $r->result->url. '"/>';
-                            echo '<p class="fit"><b>'. $r->result->name. '</b></p>';
-                            echo '<p class="fit"><b>Item ID:</b> '. $r->result->id. '</p>';
-                            echo '<p class="fit"><b>Item Price:</b> '. $r->result->price. '</p>';
-                            echo '<p class="fit"><b>Item Update:</b> '. $r->result->update. '</p>';
-                            echo '<p class="fit"><b>In-Store:</b> '. ($r->result->in_store == "0" ? "Yes":"No"). '</p>';
-                            echo '<p class="fit"><b>In-Store Price:</b> '. ($r->result->store_price == "" ? "N/A": $r->result->store_price). '</p>';
-                            echo '<p class="fit"><b>Gender:</b> '. $r->result->gender. '</p>';
-                            echo '<p class="fit"><b>XP:</b> '. $r->result->xp. '</p>';
-                            echo '<p class="fit"><b>Category:</b> '. $r->result->category. '</p>';
+                            echo '<img width="150" height="150" src="'. $r->results->url. '"/>';
+                            echo '<p class="fit"><b>'. $r->results->name. '</b></p>';
+                            echo '<p class="fit"><b>Item ID:</b> '. $r->results->id. '</p>';
+                            echo '<p class="fit"><b>Item Price:</b> '. $r->results->price. '</p>';
+                            echo '<p class="fit"><b>Item Update:</b> '. $r->results->update. '</p>';
+                            echo '<p class="fit"><b>In-Store:</b> '. ($r->results->in_store == "0" ? "Yes":"No"). '</p>';
+                            echo '<p class="fit"><b>In-Store Price:</b> '. ($r->results->store_price == "" ? "N/A": $r->result->store_price). '</p>';
+                            echo '<p class="fit"><b>Gender:</b> '. $r->results->gender. '</p>';
+                            echo '<p class="fit"><b>XP:</b> '. $r->results->xp. '</p>';
+                            echo '<p class="fit"><b>Category:</b> '. $r->results->category. '</p>';
                             echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $r->result->id. '">More Info</a></div></div>';
                             echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="#">Request Price Check</a></div></div>';
                             echo '</div>';
@@ -188,7 +187,7 @@ table, th, td {
                         { 
                             echo '<div class="result_box" style="margin-left: 0px">';
                             echo '<div class="grid-container">';
-                            foreach($r->result as $item)
+                            foreach($r->results as $item)
                             {
                                 echo '<div class="grid-item">';
                                 echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #ff0000"><b>'. $item->name. '</b></p>';

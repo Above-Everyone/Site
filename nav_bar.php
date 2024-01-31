@@ -1,12 +1,14 @@
 <!-- Navbar -->
 <?php
 
-include_once("market_profiles.php");
+include_once("yomarket/market_lib.php");
 
 $info = $_COOKIE['ym_user_info'] ?? "";
 $profile;
 
-if(!empty($info)) { $profile = Profile::new_profile(explode(",", $info)); }
+if(!empty($info)) { 
+  $profile = new Profiles($info);
+}
 
 ?>
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
@@ -39,12 +41,12 @@ if(!empty($info)) { $profile = Profile::new_profile(explode(",", $info)); }
           if(!empty($info)) {
             echo '<ul class="navbar-nav  justify-content-end">';
             echo '<li class="nav-item d-flex align-items-center">';
-            echo '  <a href="admin_index.php"><input type="submit" class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" value="Suggested Prices"/></a>';
+            echo '<a href="admin_index.php"><input type="submit" class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" value="Suggested Prices"/></a>';
             echo '</li>';
             echo '</ul>';
             echo '<ul class="navbar-nav  justify-content-end">';
             echo '<li class="nav-item d-flex align-items-center">';
-            echo '  <a href="https://api.yomarket.info/save"><input type="submit" class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" value="Save DB"/></a>';
+            echo '<a href="https://api.yomarket.info/save"><input type="submit" class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" value="Save DB"/></a>';
             echo '</li>';
             echo '</ul>';
           }

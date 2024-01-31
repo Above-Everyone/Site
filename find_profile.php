@@ -1,8 +1,15 @@
 <?php
-include_once("market_profiles.php");
-include_once("yomarket.php");
-$profile_name = YoMarket::remove_strings($_SERVER['REQUEST_URI'], array("/", "@"));
-$check_auth = Profiles::find_profile($profile_name);
+require_once("yomarket/market_lib.php");
+require_once("yomarket/objects/utils.php");
+
+$profile_name = remove_strings($_SERVER['REQUEST_URI'], array("/", "@"));
+$ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+
+$profile_eng = new Profiles();
+$display_profile = $profile_eng->searchProfile($profile_name, $ip);
+
+if($display_profile->type == ResponseType::REQ_FAILED)
+  die("No User Was Found....!");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +19,7 @@ $check_auth = Profiles::find_profile($profile_name);
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://yoworld.com/images/icon.ico">
-  <title>YoMarket | @<?php echo $check_auth->username; ?></title>
+  <title>YoMarket | @<?php echo $display_profile->results->username; ?></title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Nucleo Icons -->
@@ -89,10 +96,10 @@ background: #88ba1c;
           <div class="col-auto my-auto">
             <div class="h-100">
               <h5 class="mb-1">
-              <?php echo "@". $check_auth->username; ?>
+              <?php echo "@". $display_profile->results->username; ?>
               </h5>
               <p class="mb-0 font-weight-bold text-sm">
-              <?php echo $check_auth->yoworld. " | ". $check_auth->yoworld_id; ?>
+              <?php echo $display_profile->results->yoworld. " | ". $display_profile->results->yoworld_id; ?>
               </p>
             </div>
           </div>
@@ -177,16 +184,16 @@ background: #88ba1c;
               </p>
               <hr class="horizontal gray-light my-4">
               <ul class="list-group">
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Yoworld</strong> &nbsp; <?php echo $check_auth->yoworld. ' | '. $check_auth->yoworld_id; ?></li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Discord</strong> &nbsp; <?php echo $check_auth->discord. ' | '. $check_auth->discord_id; ?></li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Facebook:</strong> &nbsp; <?php echo $check_auth->facebook. ' | '. $check_auth->facebook_id; ?></li>
+                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Yoworld</strong> &nbsp; <?php echo $display_profile->results->yoworld. ' | '. $display_profile->results->yoworld_id; ?></li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Discord</strong> &nbsp; <?php echo $display_profile->results->discord. ' | '. $display_profile->results->discord_id; ?></li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Facebook:</strong> &nbsp; <?php echo $display_profile->results->facebook. ' | '. $display_profile->results->facebook_id; ?></li>
                 <li class="list-group-item border-0 ps-0 pb-0">
                   <strong class="text-dark text-sm">Social:</strong> &nbsp;
                   <?php
-                  if($check_auth->is_FbID()) {
-                    echo '<a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="https://www.facebook.com/profile.php?id='. $check_auth->facebook_id. '">';
+                  if($display_profile->results->is_FbID()) {
+                    echo '<a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="https://www.facebook.com/profile.php?id='. $display_profile->results->facebook_id. '">';
                   } else { 
-                    echo '<a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="https://www.facebook.com/'. $check_auth->facebook_id. '">';
+                    echo '<a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="https://www.facebook.com/'. $display_profile->results->facebook_id. '">';
                   }
                   ?>
                     <i class="fab fa-facebook fa-lg"></i>
@@ -230,20 +237,21 @@ background: #88ba1c;
               <ul class="list-group">
                 <?php
                 // var_dump($check_auth->activities);
-                  if(count($check_auth->activities) > 0) {
-                    foreach($check_auth->activities as $act) {
+                  if(count($display_profile->results->activities) > 0) {
+                    foreach($display_profile->results->activities as $act) {
+                      $t = "https://yw-web.yoworld.com/cdn/items/". substr($act->item->id, 0, 2). "/". substr($act->item->id, 2, 2). "/". $act->item->id. "/". $act->item->id. "_60_60.gif";
                       echo '<li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">';
                       echo '<div class="avatar me-3">';
-                      echo '<img src="'. $act[3]. '" alt="kal" class="border-radius-lg shadow">';
+                      echo '<img src="'. $t. '" alt="kal" class="border-radius-lg shadow">';
                       echo '</div>';
                       echo '<div class="d-flex align-items-start flex-column justify-content-center">';
-                      echo '<h6 class="mb-0 text-sm">'. $check_auth->username. ' '. Profile::act_to_profile($act[0]). '</h6>';
-                      echo '<p class="mb-0 text-xs">'. $act[1]. '</p>';
+                      echo '<h6 class="mb-0 text-sm">'. $display_profile->results->username. ' '. Activity_T::type2humanstr($act->act_t). '</h6>';
+                      echo '<p class="mb-0 text-xs">'. $act->timestamp. '</p>';
                       echo '</div>';
                       echo '<a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>';
                       echo '</li>';
                     }
-                  } else { echo '<p>'. $check_auth->username. ' has no activities</p>'; }
+                  } else { echo '<p>'. $display_profile->results->username. ' has no activities</p>'; }
                 ?>
               </ul>
             </div>
@@ -255,31 +263,26 @@ background: #88ba1c;
           <div class="card mb-4">
             <div class="card-header pb-0 p-3">
               <h6 class="mb-1">Investory</h6>
-              <p class="text-sm">List Of <?php echo $check_auth->username; ?>'s items</p>
+              <p class="text-sm">List Of <?php echo $display_profile->results->username; ?>'s items</p>
             </div>
             <div class="card-body p-3">
               <div class="row">
                 <div class="myBox">
                   
                   <?php
-                    if(count($check_auth->invo) > 0 ) {
+                    if(count($display_profile->results->invo) > 0 ) {
                       // var_dump($check_auth->invo);
-                      foreach($check_auth->invo as $item)
-                        echo '<div class="col-xl-3 col-md-6 mb-xl-0 mb-4">';
+                      foreach($display_profile->results->invo as $item)
+                        echo '<div class="col-xl-3 mb-xl-0 mb-4">';
                         echo '<div class="card card-blog card-plain">';
                         echo '<div class="position-relative">';
-                        echo '<a class="d-block shadow-xl border-radius-xl">';
-                        echo '<center><img width="200" height="200" src="'. $item[2]. '"></center>';
-                        echo '</a>';
+                        echo '<center><img width="150" width="150" src="'. $item->url. '"></center>';
                         echo '</div>';
                         echo '<div class="card-body px-1 pb-0">';
-                        echo '<a href="javascript:;"><h5>'. $item[0]. ' | '. $item[1]. '</h5></a>';
-                        echo '<p class="mb-4 text-sm">Price: '. $item[3]. ' | Update: '. $item[4]. '</p>';
-                        echo '<div class="d-flex align-items-center justify-content-between">';
-                        echo '<button type="button" class="btn btn-outline-primary btn-sm mb-0">Request To Buy!</button>';
-                        echo '<div class="avatar-group mt-2">';
-                        echo '</div></div></div></div></div>';
-                    } else { echo '<p>'. $check_auth->username. ' has no items!</p>'; }
+                        echo '<a href="https://yomarket.info/more_info.php?iid='. $item->id. '"><h5><center>'. $item->name. ' | '. $item->id. '</center></h5></a>';
+                        echo '<p class="mb-4 text-sm"><center>Price: '. $item->price. ' | Update: '. $item->update. '</center></p>';
+                        echo '</div></div></div>';
+                    } else { echo '<p>'. $display_profile->results->username. ' has no items!</p>'; }
                   ?>
                 </div>
               </div>
@@ -291,31 +294,30 @@ background: #88ba1c;
           <div class="card mb-4">
             <div class="card-header pb-0 p-3">
               <h6 class="mb-1">List Of Items For Sale</h6>
-              <p class="text-sm">List Of <?php echo $check_auth->username; ?>'s items</p>
+              <p class="text-sm">List Of <?php echo $display_profile->results->username; ?>'s items</p>
             </div>
             <div class="card-body p-3">
               <div class="row">
                 <div class="myBox">
                   
                   <?php
-                    if(count($check_auth->fs_list) > 0 ) {
+                    if(count($display_profile->results->fs_list) > 0 ) {
                       // var_dump($check_auth->invo);
-                      foreach($check_auth->fs_list as $item)
-                        echo '<div class="col-xl-3 col-md-6 mb-xl-0 mb-4">';
+                      foreach($display_profile->results->fs_list as $item) {
+                        echo '<div class="col-xl-3 mb-xl-0 mb-4">';
                         echo '<div class="card card-blog card-plain">';
                         echo '<div class="position-relative">';
-                        echo '<a class="d-block shadow-xl border-radius-xl">';
-                        echo '<center><img width="200" height="200" src="'. $item[2]. '"></center>';
-                        echo '</a>';
+                        echo '<center><img width="150" width="150" src="'. $item->item->url. '"></center>';
                         echo '</div>';
                         echo '<div class="card-body px-1 pb-0">';
-                        echo '<a href="javascript:;"><h5>'. $item[0]. ' | '. $item[1]. '</h5></a>';
-                        echo '<p class="mb-4 text-sm">Price: '. $item[3]. ' | Update: '. $item[4]. '</p>';
-                        echo '<div class="d-flex align-items-center justify-content-between">';
-                        echo '<button type="button" class="btn btn-outline-primary btn-sm mb-0">Request To Buy!</button>';
+                        echo '<a href="https://yomarket.info/more_info.php?iid='. $item->item->id. '"><h5><center>'. $item->item->name. ' | '. $item->item->id. '</center></h5></a>';
+                        echo '<p class="mb-4 text-sm"><center>Price: '. $item->item->price. ' | Update: '. $item->item->update. '</center></p>';
+                        echo '<center><div class="align-items-center justify-content-between">';
+                        echo '<input type="submit" href="##" class="btn btn-outline-primary btn-sm mb-0" value="Request To Buy!"/>';
                         echo '<div class="avatar-group mt-2">';
-                        echo '</div></div></div></div></div>';
-                    } else { echo '<p>'. $check_auth->username. ' has no items!</p>'; }
+                        echo '</div></div></center></div></div></div>';
+                      }
+                    } else { echo '<p>'. $display_profile->results->username. ' has no items!</p>'; }
                   ?>
                 </div>
               </div>
@@ -327,31 +329,27 @@ background: #88ba1c;
           <div class="card mb-4">
             <div class="card-header pb-0 p-3">
               <h6 class="mb-1">List Of Items Wanted</h6>
-              <p class="text-sm">List Of <?php echo $check_auth->username; ?>'s items</p>
+              <p class="text-sm">List Of <?php echo $display_profile->results->username; ?>'s items</p>
             </div>
             <div class="card-body p-3">
               <div class="row">
                 <div class="myBox">
                   
                   <?php
-                    if(count($check_auth->wtb_list) > 0 ) {
+                    if(count($display_profile->results->wtb_list) > 0 ) {
                       // var_dump($check_auth->invo);
-                      foreach($check_auth->wtb_list as $item)
-                        echo '<div class="col-xl-3 col-md-6 mb-xl-0 mb-4">';
+                      foreach($display_profile->results->wtb_list as $item) {
+                        echo '<div class="col-xl-3 mb-xl-0 mb-4">';
                         echo '<div class="card card-blog card-plain">';
                         echo '<div class="position-relative">';
-                        echo '<a class="d-block shadow-xl border-radius-xl">';
-                        echo '<center><img width="200" height="200" src="'. $item[2]. '"></center>';
-                        echo '</a>';
+                        echo '<center><img width="150" width="150" src="'. $item->item->url. '"></center>';
                         echo '</div>';
                         echo '<div class="card-body px-1 pb-0">';
-                        echo '<a href="javascript:;"><h5>'. $item[0]. ' | '. $item[1]. '</h5></a>';
-                        echo '<p class="mb-4 text-sm">Price: '. $item[3]. ' | Update: '. $item[4]. '</p>';
-                        echo '<div class="d-flex align-items-center justify-content-between">';
-                        echo '<button type="button" class="btn btn-outline-primary btn-sm mb-0">Request To Buy!</button>';
-                        echo '<div class="avatar-group mt-2">';
-                        echo '</div></div></div></div></div>';
-                    } else { echo '<p>'. $check_auth->username. ' has no items!</p>'; }
+                        echo '<a href="https://yomarket.info/more_info.php?iid='. $item->item->id. '"><h5><center>'. $item->item->name. ' | '. $item->item->id. '</center></h5></a>';
+                        echo '<p class="mb-4 text-sm"><center>Price: '. $item->item->price. ' | Update: '. $item->item->update. '</center></p>';
+                        echo '</div></div></div>';
+                      }
+                    } else { echo '<p>'. $display_profile->results->username. ' has no items!</p>'; }
                   ?>
                 </div>
               </div>

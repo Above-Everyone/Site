@@ -1,12 +1,11 @@
 <?php
-include_once("yomarket.php");
+include_once("yomarket/item_lib.php");
 
-$r = YoMarket::stats();
+$stats = Items::reqStats();
 
-$stats = explode(",", $r->result);
-$db_c = $stats[0];
-$search_c = $stats[1];
-$change_c = $stats[2];
+$db_c = $stats->results[0];
+$search_c = $stats->results[1];
+$change_c = $stats->results[2];
 $visitor_c = 0;
 ?>
 <div class="row">
@@ -81,7 +80,7 @@ $visitor_c = 0;
                   <div class="numbers">
                     <p class="text-sm mb-0 text-capitalize font-weight-bold">Admins</p>
                     <h5 class="font-weight-bolder mb-0">
-                      7
+                      <?php echo $visitor_c; ?>
                     </h5>
                   </div>
                 </div>

@@ -1,16 +1,16 @@
 <?php
 
-include_once("market_profiles.php");
+include_once("yomarket/market_lib.php");
 
 $info = $_COOKIE['ym_user_info'] ?? "";
-$profile;
+$ADMIN_ACC_INFO;
 
 if(empty($info))
 {
     header('Location: index.php');
     exit();
 } else {
-    $profile = Profile::new_profile(explode(",", $info));
+    $ADMIN_ACC_INFO = new Profiles($info);
 }
 ?>
 
@@ -172,37 +172,46 @@ font-size: 20px;
                 ini_set('display_errors', 1);
                 ini_set('display_startup_errors', 1);
                 error_reporting(E_ALL);
-                include_once("yomarket.php");
+                include_once("yomarket/market_lib.php");
 
                 $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? "";
                 $agent = str_replace(" ", "_", $_SERVER["HTTP_USER_AGENT"] ?? "");
                 $agent = str_replace(";", "-", $agent);
 
-                $reversed = array_reverse(YoMarket::all_suggestions());
+                $items = new Items();
+                $suggestions = $items->reqSuggestions();
+                $reversed = array_reverse($suggestions->results);
 
-                foreach($reversed as $log)
+                if($suggestions->type == ResponseType::NONE)
                 {
-                    $line_info = explode(",", $log);
-                    if(count($line_info) < 3) continue;
-                    $t = "https://yw-web.yoworld.com/cdn/items/". substr($line_info[1], 0, 2). "/". substr($line_info[1], 2, 2). "/". $line_info[1]. "/". $line_info[1]. "_60_60.gif";
-                    echo '<tr>';
-                    echo '<td>';
-                    echo '<div class="d-flex px-2 py-1">';
-                    echo '<div>';
-                    echo '<img src="'. $t. '" class="avatar avatar-sm me-3" alt="user1">';
-                    echo '</div>';
-                    echo '<div class="d-flex flex-column justify-content-center">';
-                    echo '<h6 class="mb-0 text-sm">'. $line_info[0]. '</h6>';
-                    echo '<p class="text-xs text-secondary mb-0">'. $line_info[1]. '</p>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '<td class="align-middle text-center">';
-                    echo '<span class="text-secondary text-xs font-weight-bold">'. $line_info[2]. '</span>';
-                    echo '</td>';
-                    echo '<td class="align-middle text-center">';
-                    echo '<span class="text-secondary text-xs font-weight-bold">'. $line_info[3]. '</span>';
-                    echo '</td>';
-                    echo '</tr>';
+
+                } else if($suggestions->type == ResponseType::REQ_SUCCESS) {
+                  foreach($reversed as $log)
+                  {
+                      $t = "https://yw-web.yoworld.com/cdn/items/". substr($log->item_id, 0, 2). "/". substr($log->item_id, 2, 2). "/". $log->item_id. "/". $log->item_id. "_60_60.gif";
+                      echo '<tr>';
+                      echo '<td>';
+                      echo '<div class="d-flex px-2 py-1">';
+                      echo '<div>';
+                      echo '<img src="'. $t. '" class="avatar avatar-sm me-3" alt="user1">';
+                      echo '</div>';
+                      echo '<div class="d-flex flex-column justify-content-center">';
+                      echo '<h6 class="mb-0 text-sm">'. $log->item_id. '</h6>';
+                      echo '<p class="text-xs text-secondary mb-0">Suggested By: '. $log->user. '</p>';
+                      echo '</div>';
+                      echo '</div>';
+                      echo '</td>';
+                      echo '<td class="align-middle text-center">';
+                      echo '<div class="d-flex flex-column justify-content-center">';
+                      echo '<h6 class="mb-0 text-sm">'. $log->new_price. '</h6>';
+                      echo '<p class="text-xs text-secondary mb-0">'. $log->old_price. '</p>';
+                      echo '</div>';
+                      echo '</td>';
+                      echo '<td class="align-middle text-center">';
+                      echo '<span class="text-secondary text-xs font-weight-bold">'. $log->timestamp. '</span>';
+                      echo '</td>';
+                      echo '</tr>';
+                  }
                 }
             ?>
 
