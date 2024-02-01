@@ -53,25 +53,96 @@ overflow: scroll;
     height:auto;
     width:auto;
 }
-
-/* Scrollbar styles */
-::-webkit-scrollbar {
-width: 12px;
-height: 12px;
+.txtt-input {
+    font-size: 20px;
+    margin: auto;
+    border-style: solid;
+    border-color: #0c0d10;
+    color: #000;
+    background-color: #fff;
+}
+.btnn-input {
+    font-size: 20px;
+    margin: auto;
+    border-style: solid;
+    border-color: #0c0d10;
+    color: #fff;
+    background-color: #fff;
+    font-size: 20px;
 }
 
-::-webkit-scrollbar-track {
-border: 1px solid yellowgreen;
-border-radius: 10px;
+.item_box {
+    background-color: #cb0c9f;
+    height: 100mh;
+    width: 500px;
+    border: solid;
 }
 
-::-webkit-scrollbar-thumb {
-background: yellowgreen;  
-border-radius: 10px;
+/*
+            Search Results Box & Grid Container
+*/
+.result_box {
+    color: #fff;
+    margin: auto;
+    border-style: solid;
+    border-color: #fff;
+    background-color: #fff;
+    height: 600px;
+    padding-right: 60px;
 }
-
-::-webkit-scrollbar-thumb:hover {
-background: #88ba1c;  
+.grid-container {
+    display: grid;
+    background-color: transparent;
+    /* grid-template-columns: fit-content(300px) fit-content(300px) 6 2fr; */
+    /* grid-template-columns: 100mw, 100mw, auto; */
+    /* grid-template-columns: repeat(auto-fill, 1fr); */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-gap: 5rem;
+    /* grid-gap: 10px; */
+    box-sizing: border-box;
+    padding: 5px;
+}
+.grid-item {
+    color: #fff;
+    background-color: #fff;
+    border-style: groove;
+    border-color: #cb0c9f;
+    text-align: center;
+    box-sizing: border-box;
+    width: 250px;
+}
+.item-name {
+    box-sizing: border-box;
+    margin: auto;
+    background-color: #cb0c9f;
+    box-sizing: border-box;
+    width: 100mw;
+    height: 50px;
+}
+/*
+            Buttons And Textboxes
+*/
+.txt-input {
+font-size: 20px;
+    border-style: solid;
+    border-color: #fff;
+    color: #fff;
+    background-color: rgba(42, 42, 42);
+}
+.btn-input {
+    font-size: 20px;
+    border-style: solid;
+    border-color: #fff;
+    color: #fff;
+    background-color: #0c0d10;
+    font-size: 20px;
+}
+.fit {
+    
+    box-sizing: border-box;
+}
+table, th, td {
+  border:1px solid black;
 }
 </style>
 
@@ -90,7 +161,12 @@ background: #88ba1c;
         <div class="row gx-4">
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
-              <img src="../assets/img/bruce-mars.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+              
+            <?php
+                if(!empty($display_profile->results->yoworld_id)) {
+                  echo '<img src="https://yomarket.info/cropped_avi.php?URL=https://yw-web.yoworld.com/user/images/yo_avatars/000/'. substr($display_profile->results->yoworld_id, 0, 3). "/". substr($display_profile->results->yoworld_id, 3, 3)."/". $display_profile->results->yoworld_id. ".png" .'" alt="profile_image" class="w-100 border-radius-lg shadow-sm">';
+                }
+                ?>
             </div>
           </div>
           <div class="col-auto my-auto">
@@ -171,8 +247,6 @@ background: #88ba1c;
     <div class="container-fluid py-4">
       <div class="row">
 
-      
-
         <div class="col-12 col-xl-4">
           <div class="card h-100">
             <div class="card-header pb-0 p-3">
@@ -222,7 +296,10 @@ background: #88ba1c;
                     <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
                   </a>
                 </div>
-                <center><img width="250" height="400" src="https://yw-web.yoworld.com/user/images/yo_outfits/000/187/753/187753659/12256929.png"/></center>
+                <?php
+                if(!empty($display_profile->results->yoworld_id)) {
+                  echo '<center><img width="250" height="400" src="https://yw-web.yoworld.com/user/images/yo_avatars/000/'. substr($display_profile->results->yoworld_id, 0, 3). "/". substr($display_profile->results->yoworld_id, 3, 3)."/". $display_profile->results->yoworld_id. ".png" .'"/></center>'; }
+                ?>
               </div>
             </div>
           </div>
@@ -234,26 +311,44 @@ background: #88ba1c;
               <h6 class="mb-0">Acitivities</h6>
             </div>
             <div class="card-body p-3">
-              <ul class="list-group">
-                <?php
-                // var_dump($check_auth->activities);
-                  if(count($display_profile->results->activities) > 0) {
-                    foreach($display_profile->results->activities as $act) {
-                      $t = "https://yw-web.yoworld.com/cdn/items/". substr($act->item->id, 0, 2). "/". substr($act->item->id, 2, 2). "/". $act->item->id. "/". $act->item->id. "_60_60.gif";
-                      echo '<li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">';
-                      echo '<div class="avatar me-3">';
-                      echo '<img src="'. $t. '" alt="kal" class="border-radius-lg shadow">';
-                      echo '</div>';
-                      echo '<div class="d-flex align-items-start flex-column justify-content-center">';
-                      echo '<h6 class="mb-0 text-sm">'. $display_profile->results->username. ' '. Activity_T::type2humanstr($act->act_t). '</h6>';
-                      echo '<p class="mb-0 text-xs">'. $act->timestamp. '</p>';
-                      echo '</div>';
-                      echo '<a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>';
-                      echo '</li>';
-                    }
-                  } else { echo '<p>'. $display_profile->results->username. ' has no activities</p>'; }
-                ?>
-              </ul>
+              <div style="width:100mw;height: 400px; line-height:.5em;padding:5px;overflow:auto;overflow-x:hidden;">
+                <ul class="list-group">
+                  <?php
+                  // var_dump($check_auth->activities);
+                    if(count($display_profile->results->activities) > 0) {
+                      $n = array_reverse($display_profile->results->activities);
+                      foreach($n as $act) {
+                        echo '<li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">';
+                        echo '<div class="avatar me-3">';
+
+                        if(!empty($act->item))
+                          { $t = "https://yw-web.yoworld.com/cdn/items/". substr($act->item->id, 0, 2). "/". substr($act->item->id, 2, 2). "/". $act->item->id. "/". $act->item->id. "_60_60.gif";
+                          echo '<img src="'. $t. '" alt="kal" class="border-radius-lg shadow">'; }
+
+                        echo '</div>';
+                        echo '<div class="d-flex align-items-start flex-column justify-content-center">';
+                        echo '<h6 class="mb-0 text-sm">'. $display_profile->results->username. ' '. Activity_T::type2humanstr($act->act_t);
+
+                        if($act->act_t == Activity_T::item_sold || $act->act_t == Activity_T::item_bought) {
+                          echo ' for '. $act->price; }
+                        else if($act->act_t == Activity_T::price_change) {
+                          echo ' price the of '. $act->item->id. " to ". $act->price; }
+                        else if($act->act_t == Activity_T::fs_posted) {
+                          echo " ". $act->item->name. " for ". $act->price; }
+                        else if($act->act_t == Activity_T::wtb_posted) {
+                          echo " ". $act->item->name. "!"; }
+                        else if($act->act_t == Activity_T::invo_posted) {
+                          echo " ". $act->item->name. " to their inventory"; }
+                        else if($act->act_t == Activity_T::item_viewed) {
+                          echo " ". $act->item->name;}
+                          
+                        echo '</h6>';
+                        echo '<p class="mb-0 text-xs">'. $act->timestamp. '</p>';
+                      }
+                    } else { echo '<p>'. $display_profile->results->username. ' has no activities</p>'; }
+                  ?>
+                </ul>
+              </div>
             </div>
 
           </div>
@@ -267,21 +362,24 @@ background: #88ba1c;
             </div>
             <div class="card-body p-3">
               <div class="row">
-                <div class="myBox">
+                <div style="width:100mw;line-height:.5em;padding:10px;overflow:auto;overflow-x:hidden;">
+
+
                   
                   <?php
                     if(count($display_profile->results->invo) > 0 ) {
-                      // var_dump($check_auth->invo);
-                      foreach($display_profile->results->invo as $item)
-                        echo '<div class="col-xl-3 mb-xl-0 mb-4">';
-                        echo '<div class="card card-blog card-plain">';
-                        echo '<div class="position-relative">';
-                        echo '<center><img width="150" width="150" src="'. $item->url. '"></center>';
+                        echo '<div class="result_box" style="margin-left: 0px">';
+                        echo '<div class="grid-container">';
+                        foreach($display_profile->results->invo as $item) {
+                            echo '<div class="grid-item">';
+                            echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #ff0000"><b>'. $item->name. '</b></p>';
+                            echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->url. '" />';
+                            echo '<p style="font-size: 15px;color: #ff0000">#'. $item->id. '<br/>Price: '. ($item->price == "" ? "N/A" : $item->price). '<br />Update: '. ($item->update == "" ? "N/A" : $item->update). '</p>';
+                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->id. '">More Info</a></div></div>';
+                            echo '</div>';
+                        }
                         echo '</div>';
-                        echo '<div class="card-body px-1 pb-0">';
-                        echo '<a href="https://yomarket.info/more_info.php?iid='. $item->id. '"><h5><center>'. $item->name. ' | '. $item->id. '</center></h5></a>';
-                        echo '<p class="mb-4 text-sm"><center>Price: '. $item->price. ' | Update: '. $item->update. '</center></p>';
-                        echo '</div></div></div>';
+                        echo '</div>';
                     } else { echo '<p>'. $display_profile->results->username. ' has no items!</p>'; }
                   ?>
                 </div>
@@ -298,25 +396,22 @@ background: #88ba1c;
             </div>
             <div class="card-body p-3">
               <div class="row">
-                <div class="myBox">
+                <div style="width:100mw;line-height:.5em;padding:5px;overflow:auto;overflow-x:hidden;">
                   
                   <?php
                     if(count($display_profile->results->fs_list) > 0 ) {
-                      // var_dump($check_auth->invo);
-                      foreach($display_profile->results->fs_list as $item) {
-                        echo '<div class="col-xl-3 mb-xl-0 mb-4">';
-                        echo '<div class="card card-blog card-plain">';
-                        echo '<div class="position-relative">';
-                        echo '<center><img width="150" width="150" src="'. $item->item->url. '"></center>';
+                        echo '<div class="result_box" style="margin-left: 0px">';
+                        echo '<div class="grid-container">';
+                        foreach($display_profile->results->fs_list as $item) {
+                            echo '<div class="grid-item">';
+                            echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #ff0000"><b>'. $item->item->name. '</b></p>';
+                            echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->item->url. '" />';
+                            echo '<p style="font-size: 15px;color: #ff0000">#'. $item->item->id. '<br />Selling for: '. ($item->fs_price == "" ? "N/A" : $item->fs_price). '<br />Posted: '. ($item->posted_timestamp == "" ? "N/A" : $item->posted_timestamp). '</p>';
+                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->item->id. '">More Info</a></div></div>';
+                            echo '</div>';
+                        }
                         echo '</div>';
-                        echo '<div class="card-body px-1 pb-0">';
-                        echo '<a href="https://yomarket.info/more_info.php?iid='. $item->item->id. '"><h5><center>'. $item->item->name. ' | '. $item->item->id. '</center></h5></a>';
-                        echo '<p class="mb-4 text-sm"><center>Price: '. $item->item->price. ' | Update: '. $item->item->update. '</center></p>';
-                        echo '<center><div class="align-items-center justify-content-between">';
-                        echo '<input type="submit" href="##" class="btn btn-outline-primary btn-sm mb-0" value="Request To Buy!"/>';
-                        echo '<div class="avatar-group mt-2">';
-                        echo '</div></div></center></div></div></div>';
-                      }
+                        echo '</div>';
                     } else { echo '<p>'. $display_profile->results->username. ' has no items!</p>'; }
                   ?>
                 </div>
@@ -333,22 +428,23 @@ background: #88ba1c;
             </div>
             <div class="card-body p-3">
               <div class="row">
-                <div class="myBox">
+                <div style="width:100mw;line-height:.5em;padding:5px;overflow:auto;overflow-x:hidden;">
                   
                   <?php
                     if(count($display_profile->results->wtb_list) > 0 ) {
-                      // var_dump($check_auth->invo);
-                      foreach($display_profile->results->wtb_list as $item) {
-                        echo '<div class="col-xl-3 mb-xl-0 mb-4">';
-                        echo '<div class="card card-blog card-plain">';
-                        echo '<div class="position-relative">';
-                        echo '<center><img width="150" width="150" src="'. $item->item->url. '"></center>';
+                        echo '<div class="result_box" style="margin-left: 0px">';
+                        echo '<div class="grid-container">';
+                        foreach($display_profile->results->wtb_list as $item) {
+                            echo '<div class="grid-item">';
+                            echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #ff0000"><b>'. $item->item->name. '</b></p>';
+                            echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->item->url. '" />';
+                            echo '<p style="font-size: 15px;color: #ff0000">#'. $item->item->id. '</p>';
+                            echo '<p style="font-size: 15px;color: #ff0000">Offering: '. ($item->wtb_price == "" ? "N/A" : $item->wtb_price). '<br />Posted: '. ($item->posted_timestamp == "" ? "N/A" : $item->posted_timestamp). '</p>';
+                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->item->id. '">More Info</a></div></div>';
+                            echo '</div>';
+                        }
                         echo '</div>';
-                        echo '<div class="card-body px-1 pb-0">';
-                        echo '<a href="https://yomarket.info/more_info.php?iid='. $item->item->id. '"><h5><center>'. $item->item->name. ' | '. $item->item->id. '</center></h5></a>';
-                        echo '<p class="mb-4 text-sm"><center>Price: '. $item->item->price. ' | Update: '. $item->item->update. '</center></p>';
-                        echo '</div></div></div>';
-                      }
+                        echo '</div>';
                     } else { echo '<p>'. $display_profile->results->username. ' has no items!</p>'; }
                   ?>
                 </div>

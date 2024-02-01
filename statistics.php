@@ -6,7 +6,7 @@ $stats = Items::reqStats();
 $db_c = $stats->results[0];
 $search_c = $stats->results[1];
 $change_c = $stats->results[2];
-$visitor_c = 0;
+$admin = $stats->results[3];
 ?>
 <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -80,7 +80,7 @@ $visitor_c = 0;
                   <div class="numbers">
                     <p class="text-sm mb-0 text-capitalize font-weight-bold">Admins</p>
                     <h5 class="font-weight-bolder mb-0">
-                      <?php echo $visitor_c; ?>
+                      <?php echo $admin; ?>
                     </h5>
                   </div>
                 </div>

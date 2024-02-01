@@ -91,7 +91,7 @@
 }
 .item-name {
     margin: auto;
-    background-color: #cb0c9f;
+    background-color: #000;
     box-sizing: border-box;
     width: 100mw;
     height: 50px;
@@ -161,7 +161,7 @@ table, th, td {
 
                         $items = new Items();
                         $r = $items->searchItem($itemID, $ip."&agent=". $agent);
-                        
+
                         if($r->type == ResponseType::REQ_FAILED || $r->type == ResponseType::NONE)
                         {
                             echo "<p>Error, Unable to connect to YoMarket's API. Please try again (Try using all lowercase)</p><br /><p>This is a common bug we are working on fixing....!</p>";
@@ -179,24 +179,25 @@ table, th, td {
                             echo '<p class="fit"><b>Gender:</b> '. $r->results->gender. '</p>';
                             echo '<p class="fit"><b>XP:</b> '. $r->results->xp. '</p>';
                             echo '<p class="fit"><b>Category:</b> '. $r->results->category. '</p>';
-                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $r->result->id. '">More Info</a></div></div>';
-                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="#">Request Price Check</a></div></div>';
+                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $r->results->id. '">More Info</a></div></div>';
                             echo '</div>';
                             echo '</div></form></center>';
                         } else if($r->type == ResponseType::EXTRA)
                         { 
+                            echo '<a style="padding-left: 20px"><font color="000000">'. count($r->results). ' results found for '. $itemID. '!</font></a>';
                             echo '<div class="result_box" style="margin-left: 0px">';
                             echo '<div class="grid-container">';
                             foreach($r->results as $item)
                             {
                                 echo '<div class="grid-item">';
-                                echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #ff0000"><b>'. $item->name. '</b></p>';
+                                echo '<p class="item-name bg-gradient-primary" style="padding-top: 5px;font-size: 15px; color: #000000"><b>'. $item->name. '</b></p>';
                                 echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->url. '" />';
                                 echo '<p style="font-size: 15px;color: #ff0000">#'. $item->id. '</p>';
                                 echo '<p style="font-size: 15px;color: #ff0000">Price: '. $item->price. '</p>';
                                 echo '<p style="font-size: 15px;color: #ff0000">Last Update: '. $item->update. '</p>';
-                                echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->id. '">More Info</a></div></div>';
-                                echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="#">Request Price Check</a></div></div>';
+                                echo '<div class="form-group mb-4" style="display: inline-block;"><div class="col-sm-12">';
+                                echo '<a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->id. '">More Info</a>';
+                                echo '<input style="margin-left:5px;width: 200px;" type="submit" class="fit btn btn-success" id="#" name="#" value="Price Check"/></div></div>';
                                 echo '</div>';
                             }
                             echo '</div>';

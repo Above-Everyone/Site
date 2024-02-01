@@ -11,9 +11,14 @@
 
     if(array_key_exists("ym_login", $_POST))
     {
+        if(empty($ym_user) || empty($ym_passwd))
+        {
+            echo '<center><p>Missing fields!</p></center>';
+            return;
+        }
         $profile_eng = new Profiles($ym_user);
-        $r = $profile_eng->LoginAuth($ym_user, $ym_passwd, $ip);
-        
+        $r = $profile_eng->LoginAuth($ym_user, $ym_passwd);
+
         if($r->type == ResponseType::LOGIN_SUCCESS) {
             setcookie("ym_user_info", $r->results->raw_data, time() + (600 * 30), "/", null, false, true);
             header('Location: https://yomarket.info/admin_index.php', true, 302);

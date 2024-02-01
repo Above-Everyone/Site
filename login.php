@@ -19,10 +19,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <title>
-    Soft UI Dashboard by Creative Tim
-  </title>
+  <link rel="icon" type="image/png" sizes="16x16" href="https://yoworld.com/images/icon.ico">
+  <title>YoMarket | Item Search (Desktop)</title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Nucleo Icons -->
@@ -45,8 +43,8 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
           <div class="container-fluid pe-0">
-            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="../pages/dashboard.html">
-              Soft UI Dashboard
+            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="index.php">
+              YoMarket
             </a>
             <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon mt-2">
@@ -91,7 +89,7 @@
                 <div class="card-body p-3">
                   <form action="login.inc.php" method="post">
                       <div class="mb-3"><input type="text" class="form-control" placeholder="Username" aria-label="Name" aria-describedby="email-addon" id="ym_username" name="ym_username"></div><br />
-                      <div class="mb-3"><input type="text" class="form-control" placeholder="Password" aria-label="Name" aria-describedby="email-addon" id="ym_password" name="ym_password"></div><br />
+                      <div class="mb-3"><input type="password" class="form-control" placeholder="Password" aria-label="Name" aria-describedby="email-addon" id="ym_password" name="ym_password"></div><br />
                       <div class="form-group mb-4"><div class="col-sm-12"><input type="submit" class="btn btn-success" style="width: 100mw" id="ym_login" name="ym_login" value="Search"/></div></div>
                   </form>
                 </div>
@@ -105,11 +103,7 @@
 
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('../assets/img/curved-images/curved6.jpg')"></div>
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>

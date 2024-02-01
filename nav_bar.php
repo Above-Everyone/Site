@@ -7,7 +7,7 @@ $info = $_COOKIE['ym_user_info'] ?? "";
 $profile;
 
 if(!empty($info)) { 
-  $profile = new Profiles($info);
+  $profile = new Profile($info);
 }
 
 ?>
@@ -74,7 +74,7 @@ if(!empty($info)) {
             
             echo '<ul class="navbar-nav  justify-content-end" style="padding-right: 20px;" >';
             echo '<li class="nav-item d-flex align-items-center">';
-            echo '  <a href="#" class="nav-link text-body font-weight-bold px-0">';
+            echo '  <a href="https://yomarket.info/@'. $profile->username. '" class="nav-link text-body font-weight-bold px-0">';
             echo '    <i class="fa fa-user me-sm-1"></i>';
             echo '<p class="d-sm-inline d-none"> Welcome Back: '. $profile->username. '!</p>';
             echo '  </a>';
@@ -83,7 +83,7 @@ if(!empty($info)) {
 
             echo '<ul class="navbar-nav  justify-content-end">';
             echo '<li class="nav-item d-flex align-items-center">';
-            echo '  <a href="#" class="nav-link text-body font-weight-bold px-0">';
+            echo '  <a href="sign_out.php" class="nav-link text-body font-weight-bold px-0">';
             echo '    <i class="fa fa-user me-sm-1"></i>';
             echo '    <span class="d-sm-inline d-none">Sign Out</span>';
             echo '  </a>';
