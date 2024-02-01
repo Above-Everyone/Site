@@ -155,12 +155,12 @@ h1 {
                                     echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="#" name="#" value="Request Price Check"/></div></div>';
 
                                     echo '<br/><div class="form-group mb-4" style="margin-right:16px;display: inline-block;"><div class="col-sm-12">';
-                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="#" name="#" value="Add To Invo"/>';
+                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="add_to_invo" name="add_to_invo" value="Add To Invo"/>';
                                     echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="add_to_fs" name="add_to_fs" value="Add To FS"/>';
                                     echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="add_to_wtb" name="add_to_wtb" value="Add To WTB"/></div></div>';
 
                                     echo '<br/><div class="form-group mb-4" style="margin-right:16px;display: inline-block;"><div class="col-sm-12">';
-                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="#" name="#" value="Remove From Invo"/>';
+                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="rm_from_invo" name="rm_from_invo" value="Remove From Invo"/>';
                                     echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="rm_from_fs" name="rm_from_fs" value="Remove From FS"/>';
                                     echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="rm_from_wtb" name="rm_from_wtb" value="Remove From WTB"/></div></div>';
                                 echo '</center></div>';
@@ -282,6 +282,46 @@ h1 {
                             return;
                         }
                         $action_check = (new Profiles($MORE_INFO_PAGE_PROFILE->username))->rmItem($MORE_INFO_PAGE_PROFILE->username, $MORE_INFO_PAGE_PROFILE->password, $ip, $itemID, Settings_T::rm_from_wtb);
+                        
+                        if($action_check->type != ResponseType::REQ_SUCCESS) {
+                            echo "<center><p>Action Failed<br />Contact an admin for more info!</p></center>";
+                            return; }
+
+                        echo "<center><p>Action Successfully completed!</p></center>";
+                        return;
+                    } else if(array_key_exists("add_to_invo", $_POST))
+                    {
+                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                        $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
+
+                        if(!isset($_GET['iid']) || empty($itemID))
+                            die("<center><p>[ X ] Fill out GET parameters to continue...!</p></center>");
+
+                        if(empty($info)) {
+                            echo "<center><p>Error, You must be signed in to use this!</p></center>";
+                            return;
+                        }
+                        $action_check = (new Profiles($MORE_INFO_PAGE_PROFILE->username))->addItem($MORE_INFO_PAGE_PROFILE->username, $MORE_INFO_PAGE_PROFILE->password, $ip, $itemID, "", Settings_T::add_to_invo);
+                        
+                        if($action_check->type != ResponseType::REQ_SUCCESS) {
+                            echo "<center><p>Action Failed<br />Contact an admin for more info!</p></center>";
+                            return; }
+
+                        echo "<center><p>Action Successfully completed!</p></center>";
+                        return;
+                    } else if(array_key_exists("rm_from_invo", $_POST))
+                    {
+                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                        $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
+
+                        if(!isset($_GET['iid']) || empty($itemID))
+                            die("<center><p>[ X ] Fill out GET parameters to continue...!</p></center>");
+
+                        if(empty($info)) {
+                            echo "<center><p>Error, You must be signed in to use this!</p></center>";
+                            return;
+                        }
+                        $action_check = (new Profiles($MORE_INFO_PAGE_PROFILE->username))->rmItem($MORE_INFO_PAGE_PROFILE->username, $MORE_INFO_PAGE_PROFILE->password, $ip, $itemID, Settings_T::rm_from_invo);
                         
                         if($action_check->type != ResponseType::REQ_SUCCESS) {
                             echo "<center><p>Action Failed<br />Contact an admin for more info!</p></center>";

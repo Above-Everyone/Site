@@ -258,9 +258,9 @@ table, th, td {
               </p>
               <hr class="horizontal gray-light my-4">
               <ul class="list-group">
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Yoworld</strong> &nbsp; <?php echo $display_profile->results->yoworld. ' | '. $display_profile->results->yoworld_id; ?></li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Discord</strong> &nbsp; <?php echo $display_profile->results->discord. ' | '. $display_profile->results->discord_id; ?></li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Facebook:</strong> &nbsp; <?php echo $display_profile->results->facebook. ' | '. $display_profile->results->facebook_id; ?></li>
+                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Yoworld</strong> &nbsp; <?php echo ($display_profile->results->yoworld == "" ? "N/A": $display_profile->results->yoworld). ' | '. $display_profile->results->yoworld_id; ?></li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Discord</strong> &nbsp; <?php echo ($display_profile->results->discord == "" ? "N/A": $display_profile->results->discord). ' | '. ($display_profile->results->discord_id == "" ? "N/A ": $display_profile->results->discord_id); ?></li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Facebook:</strong> &nbsp; <?php echo ($display_profile->results->facebook == "" ? "N/A": $display_profile->results->facebook). ' | '. ($display_profile->results->facebook_id == "" ? "N/A": $display_profile->results->facebook_id); ?></li>
                 <li class="list-group-item border-0 ps-0 pb-0">
                   <strong class="text-dark text-sm">Social:</strong> &nbsp;
                   <?php
@@ -321,9 +321,10 @@ table, th, td {
                         echo '<li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">';
                         echo '<div class="avatar me-3">';
 
-                        if(!empty($act->item))
-                          { $t = "https://yw-web.yoworld.com/cdn/items/". substr($act->item->id, 0, 2). "/". substr($act->item->id, 2, 2). "/". $act->item->id. "/". $act->item->id. "_60_60.gif";
-                          echo '<img src="'. $t. '" alt="kal" class="border-radius-lg shadow">'; }
+                        if(empty($act->item))
+                          { echo '<img src="https://yomarket.info/cropped_avi.php?URL=https://yw-web.yoworld.com/user/images/yo_avatars/000/'. substr($display_profile->results->yoworld_id, 0, 3). "/". substr($display_profile->results->yoworld_id, 3, 3)."/". $display_profile->results->yoworld_id. ".png" .'" alt="kal" class="border-radius-lg shadow">'; }
+                          else { $t = "https://yw-web.yoworld.com/cdn/items/". substr($act->item->id, 0, 2). "/". substr($act->item->id, 2, 2). "/". $act->item->id. "/". $act->item->id. "_60_60.gif";
+                                  echo '<img src="'. $t. '" alt="kal" class="border-radius-lg shadow">'; }
 
                         echo '</div>';
                         echo '<div class="d-flex align-items-start flex-column justify-content-center">';
@@ -340,7 +341,7 @@ table, th, td {
                         else if($act->act_t == Activity_T::invo_posted) {
                           echo " ". $act->item->name. " to their inventory"; }
                         else if($act->act_t == Activity_T::item_viewed) {
-                          echo " ". $act->item->name;}
+                          echo " ". $act->item->name; }
                           
                         echo '</h6>';
                         echo '<p class="mb-0 text-xs">'. $act->timestamp. '</p>';
@@ -375,7 +376,7 @@ table, th, td {
                             echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #ff0000"><b>'. $item->name. '</b></p>';
                             echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->url. '" />';
                             echo '<p style="font-size: 15px;color: #ff0000">#'. $item->id. '<br/>Price: '. ($item->price == "" ? "N/A" : $item->price). '<br />Update: '. ($item->update == "" ? "N/A" : $item->update). '</p>';
-                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->id. '">More Info</a></div></div>';
+                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?id='. $item->id. '">More Info</a></div></div>';
                             echo '</div>';
                         }
                         echo '</div>';
@@ -407,7 +408,7 @@ table, th, td {
                             echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #ff0000"><b>'. $item->item->name. '</b></p>';
                             echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->item->url. '" />';
                             echo '<p style="font-size: 15px;color: #ff0000">#'. $item->item->id. '<br />Selling for: '. ($item->fs_price == "" ? "N/A" : $item->fs_price). '<br />Posted: '. ($item->posted_timestamp == "" ? "N/A" : $item->posted_timestamp). '</p>';
-                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->item->id. '">More Info</a></div></div>';
+                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?id='. $item->item->id. '">More Info</a></div></div>';
                             echo '</div>';
                         }
                         echo '</div>';
@@ -440,7 +441,7 @@ table, th, td {
                             echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->item->url. '" />';
                             echo '<p style="font-size: 15px;color: #ff0000">#'. $item->item->id. '</p>';
                             echo '<p style="font-size: 15px;color: #ff0000">Offering: '. ($item->wtb_price == "" ? "N/A" : $item->wtb_price). '<br />Posted: '. ($item->posted_timestamp == "" ? "N/A" : $item->posted_timestamp). '</p>';
-                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->item->id. '">More Info</a></div></div>';
+                            echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?id='. $item->item->id. '">More Info</a></div></div>';
                             echo '</div>';
                         }
                         echo '</div>';

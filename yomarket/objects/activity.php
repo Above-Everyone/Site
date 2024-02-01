@@ -104,17 +104,19 @@ class Activity
         $this->act_t = Activity::str2type($arr[1]);
         $this->timestamp = $arr[count($arr)-1];
 
-        switch(count($arr) > 7) 
-        {
-            case 9:
-                $this->price = $arr[count($arr)-2];
-            case 11:
-                $this->seller_confirmation = $arr[count($arr)-3];
-                $this->buyer_confirmation = $arr[count($arr)-2];
-                $this->item = (new Item(array_slice($arr, 2, 6)));
-                $this->price = $arr[7];
-                break;
-        } 
+        if (count($arr) > 1) {
+            switch(count($arr) > 7) 
+            {
+                case 9:
+                    $this->price = $arr[count($arr)-2];
+                case 11:
+                    $this->seller_confirmation = $arr[count($arr)-3];
+                    $this->buyer_confirmation = $arr[count($arr)-2];
+                    $this->item = (new Item(array_slice($arr, 2, 6)));
+                    $this->price = $arr[7];
+                    break;
+            } 
+        }
         
     }
 

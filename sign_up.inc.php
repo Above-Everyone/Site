@@ -20,6 +20,12 @@
             return;
         }
 
+        if(!ctype_alpha($ym_uname) || !ctype_alpha($ym_ywid))
+        {
+            echo '<center><p>Invalid info provided!</p></center>';
+            return;
+        }
+
         $ym_eng = new Profiles("gg");
         $create_check = $ym_eng->createProfile($ym_uname, $ym_passwd, $ip, $ym_ywid);
 
