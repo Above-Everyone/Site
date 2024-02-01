@@ -5,9 +5,12 @@ include_once("yomarket/market_lib.php");
 
 $info = $_COOKIE['ym_user_info'] ?? "";
 $profile;
+$admin = false;
 
 if(!empty($info)) { 
   $profile = new Profile($info);
+  if(in_array(Badges::ADMIN, $profile->badges)) {
+    $admin = true; }
 }
 
 ?>
@@ -38,7 +41,7 @@ if(!empty($info)) {
           </ul>
 
           <?php
-          if(!empty($info)) {
+          if($admin) {
             echo '<ul class="navbar-nav  justify-content-end">';
             echo '<li class="nav-item d-flex align-items-center">';
             echo '<a href="admin_index.php"><input type="submit" class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" value="Suggested Prices"/></a>';

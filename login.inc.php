@@ -17,11 +17,11 @@
             return;
         }
         $profile_eng = new Profiles($ym_user);
-        $r = $profile_eng->LoginAuth($ym_user, $ym_passwd);
+        $r = $profile_eng->LoginAuth($ym_user, $ym_passwd, $ip);
 
         if($r->type == ResponseType::LOGIN_SUCCESS) {
             setcookie("ym_user_info", $r->results->raw_data, time() + (600 * 30), "/", null, false, true);
-            header('Location: https://yomarket.info/admin_index.php', true, 302);
+            header('Location: https://yomarket.info/index.php', true, 302);
             exit();
         } else if($r->type == ResponseType::INVALID_INFO) {
             echo '<center><p>Invalid Information Provided</p></center>';
