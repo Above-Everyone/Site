@@ -152,11 +152,13 @@ table, th, td {
                     $agent = str_replace(" ", "_", $_SERVER["HTTP_USER_AGENT"]);
                     $agent = str_replace(";", "-", $agent);
                     
-                    if(array_key_exists("search_item", $_POST))
+                    if(array_key_exists("search_item", $_POST) || isset($_GET['q']))
                     {
-                        $itemID = $_POST['item_query'];
+                        $itemID = $_POST['item_query'] ?? "";
+                        if(isset($_GET['q']))
+                            $itemID = $_GET['q'];
 
-                        if(!isset($_POST['item_query']) || empty($itemID))
+                        if(empty($itemID))
                             die("[ X ] Fill out GET parameters to continue...!");
 
                         $items = new Items();

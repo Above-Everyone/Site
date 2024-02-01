@@ -21,15 +21,11 @@ class Profiles
     const SETTINGS_ENDPOINT     = "https://api.yomarket.info/profile/edit/settings?data=";
     const LIST_ADD_ENDPOINT     = "https://api.yomarket.info/profile/edit/add?username=";
     const LIST_RM_ENDPOINT      = "https://api.yomarket.info/profile/edit/rm?username=";
+    CONST NEW_PROFILE_ENDPOINT  = "https://api.yomarket.info/profile/create?username=";
     public $Response;
 
     public $profile;
     public $username;
-    function Profiles(string $user)
-    {
-        $this->username = $user;
-    }
-
     public function searchProfile(string $user, string $ip, string $viewed_by = ""): Response 
     {
         $parameters = array("ip" => $ip);
@@ -66,6 +62,22 @@ class Profiles
             return (new Response(ResponseType::INVALID_INFO, 0));
         
         return (new Response(ResponseType::LOGIN_SUCCESS, (new Profile($api_resp))));
+    }
+
+    public function createProfile(string $user, string $pword, string $ip, string $ywid): Response
+    {
+        $api_resp = sendReq(self::NEW_PROFILE_ENDPOINT. $user, array("password" => $pword, "id" => $ywid));
+
+        if(empty($api_resp))
+            return (new Response(ResponseType::REQ_FAILED, 0));
+
+        if($api_resp === "ERROR_MSG")
+            return (new Response(ResponseType::NONE, 0));
+
+        if(str_contains($api_resp, "[ + ]"))
+            return (new Response(ResponseType::REQ_SUCCESS, remove_strings($api_resp, array("[ + ] Account created....!"))));
+
+        return (new Response(ResponseType::NONE, 0));
     }
 
     public function addItem(string $user, string $password, string $ip, string $itemID, string $price, Settings_T $list): Response
