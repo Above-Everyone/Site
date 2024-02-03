@@ -151,7 +151,7 @@ table, th, td {
                 error_reporting(E_ALL);
                 include_once("yomarket.php");
 
-                $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? "";
+                $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
                 $agent = str_replace(" ", "_", $_SERVER["HTTP_USER_AGENT"] ?? "");
                 $agent = str_replace(";", "-", $agent);
 

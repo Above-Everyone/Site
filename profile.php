@@ -1,6 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once("yomarket/market_lib.php");
 require_once("yomarket/objects/utils.php");
+require_once("yomarket/objects/profile.php");
 
 $profile_name = remove_strings($_SERVER['REQUEST_URI'], array("/", "@"));
 $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
@@ -184,21 +188,42 @@ table, th, td {
             <div class="nav-wrapper position-relative end-0">
               <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
 
-              <li class="nav-item">
-    <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true">
-        <img src="https://images-ext-1.discordapp.net/external/YhFGXZGaJHeKrXgPM1GUYC2lZMHOJNQnrAMwumJK0WM/https/puu.sh/K0a7Q/eab17f939a.png" alt="Verified Image" class="text-dark" width="16px" height="16px">
-        <div class="col-auto my-auto">
-            <div class="h-100">
-                <h5 class="mb-1">
-                    Verified
-                </h5>
-                <p class="mb-0 font-weight-bold text-sm">
-                    N/A
-                </p>
-            </div>
-        </div>
-    </a>
-</li>
+                <?php
+
+                if(count($display_profile->results->badges) > 0)
+                {
+                  if(in_array(Badges::VERIFIED, $display_profile->results->badges))
+                  {
+                    echo '<li class="nav-item">';
+                    echo '<a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true">';
+                    echo '<img src="https://images-ext-1.discordapp.net/external/YhFGXZGaJHeKrXgPM1GUYC2lZMHOJNQnrAMwumJK0WM/https/puu.sh/K0a7Q/eab17f939a.png" alt="Verified Image" class="text-dark" width="70x" height="70px">';
+                    echo '<div class="col-auto my-auto"><div class="h-100">';
+                    echo '</div></div>';
+                    echo '</a></li>';
+                  } 
+                  
+                  if(in_array(Badges::TRUSTED, $display_profile->results->badges))
+                  {
+                    echo '<li class="nav-item">';
+                    echo '<a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true">';
+                    echo '<img style="padding-top: 10px" src="https://yomarket.info/t.png" alt="Verified Image" class="text-dark" width="140x" height="65px">';
+                    echo '<div class="col-auto my-auto"><div class="h-100">';
+                    echo '</div></div>';
+                    echo '</a>';
+                    echo '</li>';
+                  }
+                }
+
+                ?>
+
+                <!-- <li class="nav-item">
+                  <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true">
+                  <img src="https://images-ext-1.discordapp.net/external/YhFGXZGaJHeKrXgPM1GUYC2lZMHOJNQnrAMwumJK0WM/https/puu.sh/K0a7Q/eab17f939a.png" alt="Verified Image" class="text-dark" width="50x" height="50px">
+                    <div class="col-auto my-auto"><div class="h-100">
+                      <p class="mb-1">Verified</p>
+                    </div></div>
+                  </a>
+                </li> -->
 
 
                 <li class="nav-item">
