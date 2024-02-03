@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+//error_reporting(E_ALL);
 
 function remove_strings(string $str, array $arr): string 
 {
@@ -14,7 +14,6 @@ function remove_strings(string $str, array $arr): string
 function sendReq(string $URL, array $EXTRA_PARM): string 
 {
     $req_url = $URL;
-    
     // Adding more GET parameters using $EXTRA_PARM
     if(count($EXTRA_PARM) > 0) {
         foreach($EXTRA_PARM as $parm_name => $parm_value)

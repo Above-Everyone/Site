@@ -1,8 +1,8 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+//error_reporting(E_ALL);
 
 require_once("objects/activity.php");
 require_once("objects/utils.php");
@@ -87,27 +87,27 @@ class Profiles
         $api_resp = sendReq(self::LIST_ADD_ENDPOINT. $user, array("password" => $password, "id" => $itemID, "price" => $price, "list" => $list_t));
         
         if(str_contains($api_resp, "[ X ]"))
-            return (new Response(ResponseType::NONE, 0));
+            return (new Response(ResponseType::NONE, $api_resp));
 
         if(str_contains($api_resp, "[ + ] Item added!"))
-            return (new Response(ResponseType::REQ_SUCCESS, true));
+            return (new Response(ResponseType::REQ_SUCCESS, $api_resp));
 
-        return (new Response(ResponseType::NONE, 0));
+        return (new Response(ResponseType::NONE, $api_resp));
     }
 
     public function rmItem(string $user, string $password, string $ip, string $itemID, Settings_T $llist): Response
     {
-        $list_t = Settings_T::action2str($llist);
-
-        $api_resp = sendReq(self::LIST_RM_ENDPOINT. $user, array("password" => $password, "id" => $itemID, "list" => $list_t));
+        $listt_t = Settings_T::action2str($llist);
+        
+        $api_resp = sendReq(self::LIST_RM_ENDPOINT. $user, array("password" => $password, "id" => $itemID, "list" => $listt_t));
 
         if(str_contains($api_resp, "[ X ]"))
-            return (new Response(ResponseType::NONE, 0));
+            return (new Response(ResponseType::NONE, $api_resp));
 
         if(str_contains($api_resp, "[ + ] Item added!"))
-            return (new Response(ResponseType::REQ_SUCCESS, true));
+            return (new Response(ResponseType::REQ_SUCCESS, "$api_resp $listt_t"));
 
-        return (new Response(ResponseType::NONE, 0));
+        return (new Response(ResponseType::NONE, $api_resp));
     }
 }
 

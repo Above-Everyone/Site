@@ -256,7 +256,7 @@ h1 {
 
                         if(!isset($_GET['iid']) || empty($itemID))
                             die("<center><p>[ X ] Fill out GET parameters to continue...!</p></center>");
-
+                        
                         if(empty($info)) {
                             echo "<center><p>Error, You must be signed in to use this!</p></center>";
                             return;

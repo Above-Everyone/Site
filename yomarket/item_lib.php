@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+//error_reporting(E_ALL);
 
 require_once("objects/utils.php");
 require_once("objects/items.php");
@@ -50,7 +50,7 @@ class Items
         $searchErrors = array("[ X ] Error, You must enter an Item name or ID", 
                               "[ X ] Error, No item was found for ${new_query}");
 
-        if(in_array($api_resp, $searchErrors))
+        if(in_array($api_resp, $searchErrors) || str_contains($api_resp, "[ X ]"))
             return (new Response(ResponseType::NONE, 0));
 
         if(!str_contains($api_resp, "\n"))
