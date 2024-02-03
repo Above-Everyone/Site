@@ -179,9 +179,14 @@ table, th, td {
               </p>
             </div>
           </div>
+          
           <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
             <div class="nav-wrapper position-relative end-0">
               <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
+                <li class="nav-item">
+                  
+          <div style="padding-right: 20px;"><img width="100" height="100" src="https://images-ext-1.discordapp.net/external/YhFGXZGaJHeKrXgPM1GUYC2lZMHOJNQnrAMwumJK0WM/https/puu.sh/K0a7Q/eab17f939a.png?format=webp&quality=lossless"/></div>
+              </li>
                 <li class="nav-item">
                   <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true">
                     <svg class="text-dark" width="16px" height="16px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
