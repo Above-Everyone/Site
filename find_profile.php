@@ -183,10 +183,24 @@ table, th, td {
           <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
             <div class="nav-wrapper position-relative end-0">
               <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
-                <li class="nav-item">
-                  
-          <div style="padding-right: 20px;"><img width="100" height="100" src="https://images-ext-1.discordapp.net/external/YhFGXZGaJHeKrXgPM1GUYC2lZMHOJNQnrAMwumJK0WM/https/puu.sh/K0a7Q/eab17f939a.png?format=webp&quality=lossless"/></div>
-              </li>
+
+              <li class="nav-item">
+    <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true">
+        <img src="https://images-ext-1.discordapp.net/external/YhFGXZGaJHeKrXgPM1GUYC2lZMHOJNQnrAMwumJK0WM/https/puu.sh/K0a7Q/eab17f939a.png" alt="Verified Image" class="text-dark" width="16px" height="16px">
+        <div class="col-auto my-auto">
+            <div class="h-100">
+                <h5 class="mb-1">
+                    Verified
+                </h5>
+                <p class="mb-0 font-weight-bold text-sm">
+                    N/A
+                </p>
+            </div>
+        </div>
+    </a>
+</li>
+
+
                 <li class="nav-item">
                   <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true">
                     <svg class="text-dark" width="16px" height="16px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -363,7 +377,7 @@ table, th, td {
         <div class="col-12 mt-4">
           <div class="card mb-4">
             <div class="card-header pb-0 p-3">
-              <h6 class="mb-1">Investory</h6>
+              <h6 class="mb-1">Inventory</h6>
               <p class="text-sm">List Of <?php echo $display_profile->results->username; ?>'s items</p>
             </div>
             <div class="card-body p-3">
