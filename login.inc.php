@@ -7,7 +7,7 @@
 
     $ym_user = $_POST['ym_username'] ?? "";
     $ym_passwd = $_POST['ym_password'] ?? "";
-    $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+    $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
 
     if(array_key_exists("ym_login", $_POST))
     {

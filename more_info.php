@@ -113,7 +113,7 @@ h1 {
                     ini_set('display_startup_errors', 1);
                     error_reporting(E_ALL);
 
-                    $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                    $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
                     $agent = str_replace(" ", "_", $_SERVER["HTTP_USER_AGENT"]);
                     $agent = str_replace(";", "-", $agent);
                     $itemID = $_GET['iid'] ?? "";
@@ -177,7 +177,7 @@ h1 {
                     */
                     if(array_key_exists("price_btn", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
                         $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
 
                         if(!isset($_GET['iid']) || empty($itemID))
@@ -211,7 +211,7 @@ h1 {
                         }
                     } else if(array_key_exists("add_to_fs", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
                         $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
 
                         if(!isset($_GET['iid']) || empty($itemID) || empty($n_price))
@@ -231,7 +231,7 @@ h1 {
                         return;
                     } else if(array_key_exists("add_to_wtb", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
                         $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
 
                         if(!isset($_GET['iid']) || empty($itemID) || empty($n_price))
@@ -251,7 +251,7 @@ h1 {
                         return;
                     } else if(array_key_exists("rm_from_fs", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
                         $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
 
                         if(!isset($_GET['iid']) || empty($itemID))
@@ -271,7 +271,7 @@ h1 {
                         return;
                     } else if(array_key_exists("rm_from_wtb", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
                         $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
 
                         if(!isset($_GET['iid']) || empty($itemID))
@@ -291,7 +291,7 @@ h1 {
                         return;
                     } else if(array_key_exists("add_to_invo", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
                         $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
 
                         if(!isset($_GET['iid']) || empty($itemID))
@@ -311,7 +311,7 @@ h1 {
                         return;
                     } else if(array_key_exists("rm_from_invo", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
                         $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
 
                         if(!isset($_GET['iid']) || empty($itemID))

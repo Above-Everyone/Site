@@ -8,7 +8,7 @@
     $ym_uname   = $_POST['ym_new_username'] ?? "";
     $ym_passwd  = $_POST['ym_new_pw'] ?? "";
     $ym_ywid    = $_POST['ym_new_id'] ?? "";
-    $ip         = $_SERVER["HTTP_CF_CONNECTING_IP"];
+    $ip         = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
 
     if(array_key_exists("sign_up_btn", $_POST))
     {

@@ -7,7 +7,7 @@ require_once("yomarket/objects/utils.php");
 require_once("yomarket/objects/profile.php");
 
 $profile_name = remove_strings($_SERVER['REQUEST_URI'], array("/", "@"));
-$ip = $_SERVER["HTTP_CF_CONNECTING_IP"];
+$ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
 
 $profile_eng = new Profiles();
 $display_profile = $profile_eng->searchProfile($profile_name, $ip);
