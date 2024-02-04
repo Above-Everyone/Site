@@ -7,17 +7,17 @@
                   document.write(new Date().getFullYear())
                 </script>,
                 made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">YoMarket Team</a>
+                <a href="https://discord.yomarket.info" class="font-weight-bold" target="_blank">YoMarket Team</a>
                 for a better yoworld community :)
               </div>
             </div>
             <div class="col-lg-6">
               <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                 <li class="nav-item">
-                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">YoMarket Team</a>
+                  <a href="https://discord.yomarket.info" class="nav-link text-muted" target="_blank">YoMarket Team</a>
                 </li>
                 <li class="nav-item">
-                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">Our Discord</a>
+                  <a href="https://discord.yomarket.info" class="nav-link text-muted" target="_blank">Our Discord</a>
                 </li>
               </ul>
             </div>

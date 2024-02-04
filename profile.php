@@ -379,7 +379,7 @@ table, th, td {
                         echo '<div class="grid-container">';
                         foreach($display_profile->results->invo as $item) {
                             echo '<div class="grid-item">';
-                            echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #ff0000"><b>'. $item->name. '</b></p>';
+                            echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #000000"><b>'. $item->name. '</b></p>';
                             echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->url. '" />';
                             echo '<p style="font-size: 15px;color: #ff0000">#'. $item->id. '<br/>Price: '. ($item->price == "" ? "N/A" : $item->price). '<br />Update: '. ($item->update == "" ? "N/A" : $item->update). '</p>';
                             echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->id. '">More Info</a></div></div>';
@@ -411,7 +411,7 @@ table, th, td {
                         echo '<div class="grid-container">';
                         foreach($display_profile->results->fs_list as $item) {
                             echo '<div class="grid-item">';
-                            echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #ff0000"><b>'. $item->item->name. '</b></p>';
+                            echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #000000"><b>'. $item->item->name. '</b></p>';
                             echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->item->url. '" />';
                             echo '<p style="font-size: 15px;color: #ff0000">#'. $item->item->id. '<br />Selling for: '. ($item->fs_price == "" ? "N/A" : $item->fs_price). '<br />Posted: '. ($item->posted_timestamp == "" ? "N/A" : $item->posted_timestamp). '</p>';
                             echo '<div class="form-group mb-4"><div class="col-sm-12"><a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->item->id. '">More Info</a></div></div>';
@@ -443,7 +443,7 @@ table, th, td {
                         echo '<div class="grid-container">';
                         foreach($display_profile->results->wtb_list as $item) {
                             echo '<div class="grid-item">';
-                            echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #ff0000"><b>'. $item->item->name. '</b></p>';
+                            echo '<p class="item-name bg-gradient-primary" style="font-size: 15px; color: #000000"><b>'. $item->item->name. '</b></p>';
                             echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->item->url. '" />';
                             echo '<p style="font-size: 15px;color: #ff0000">#'. $item->item->id. '</p>';
                             echo '<p style="font-size: 15px;color: #ff0000">Offering: '. ($item->wtb_price == "" ? "N/A" : $item->wtb_price). '<br />Posted: '. ($item->posted_timestamp == "" ? "N/A" : $item->posted_timestamp). '</p>';
