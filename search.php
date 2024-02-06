@@ -192,9 +192,8 @@ table, th, td {
                             foreach($r->results as $item)
                             {
                                 echo '<div class="grid-item">';
-                                echo '<p class="item-name bg-gradient-primary" style="padding-top: 5px;font-size: 15px; color: #000000"><b>'. $item->name. '</b></p>';
+                                echo '<p class="item-name bg-gradient-primary" style="padding-top: 5px;font-size: 15px; color: #000000"><b>'. $item->name. ' ('. $item->id. ')</b></p>';
                                 echo '<img style="padding-top: 20px;" width="100" height="100" src="'. $item->url. '" />';
-                                echo '<p style="font-size: 15px;color: #ff0000">#'. $item->id. '</p>';
                                 echo '<p style="font-size: 15px;color: #ff0000">Price: '. $item->price. '</p>';
                                 echo '<p style="font-size: 15px;color: #ff0000">Last Update: '. $item->update. '</p>';
                                 echo '<div class="form-group mb-4" style="display: inline-block;"><div class="col-sm-12">';
