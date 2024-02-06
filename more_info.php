@@ -166,7 +166,7 @@ h1 {
                                     echo '<center><h2>'. $r->results->name.'</h2>';
                                     echo '<p class="fit" id="current_item_id" name="current_item_id">Item ID: '. $r->results->id. '</p>';
                                     echo '<p class="fit">Price: '. $r->results->price. '</p>';
-                                    echo '<p class="fit">In-Store: '. ($r->results->in_store == "" ? "N/A" : $r->results->in_store) .'</p>';
+                                    echo '<p class="fit">In-Store: '. ($r->results->in_store == "0" ? "Yes":"No"). '</p>';
                                     echo '<p class="fit">Store Price: '. ($r->results->store_price == "" ? "N/A" : $r->results->store_price). '</p>';
                                     echo '<p class="fit">Gender: '. ($r->results->gender == "" ? "N/A" : $r->results->gender). '</p>';
                                     echo '<p class="fit">XP: '. ($r->results->xp == "" ? "N/A" : $r->results->xp). '</p>';
