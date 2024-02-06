@@ -95,11 +95,12 @@ $admin = $stats->results[3];
   </div>
 </div>
 <br />
-<div style="width:100mw;height: 100px;padding: 10px;background-color: #ffffff;border-style: solid;border-size: 3px;">
+<div style="width:100mw;height: 150px;padding: 10px;background-color: #ffffff;border-style: solid;border-size: 3px;">
   <font color="ff0000">
     <p style="size: 12px;"><b>Attention All Users Using YoMarket</b></p>
   </font>
+  <div style="height: 20px;background-color: transparent;"></div>
   <font color="000000">
-    <p>YoMarket is being worked on. Pages may break from time to time when restarting the backend. Just refresh!</p>
+    <p >YoMarket is being worked on. Pages may break from time to time when restarting the backend. Just refresh!</p>
   </font>
 </div>

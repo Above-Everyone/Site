@@ -1,12 +1,30 @@
 <?php
 
-include_once("yomarket/market_lib.php");
+require_once("yomarket/template.php");
+require_once("yomarket/market_lib.php");
+require_once("yomarket/objects/utils.php");
 
 $info = $_COOKIE['ym_user_info'] ?? "";
 $MORE_INFO_PAGE_PROFILE = "";
+$error = "";
 
+$itemID = $_GET['iid'] ?? "";
 if(!empty($info)) { 
     $MORE_INFO_PAGE_PROFILE = new Profile($info);
+}
+
+if(array_key_exists("add2template", $_POST)) 
+{
+    $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
+    if(empty($itemID) || empty($n_price))
+    $error = "Missing fields...!";
+
+    if($n_price === "reset") {
+        TemplateGenerator::rmTemplateCookie();
+        $error = "Template successfully reset!";
+    }
+
+    echo TemplateGenerator::addItem2Template($itemID, $n_price);
 }
 
 ?>
@@ -112,11 +130,17 @@ h1 {
                     ini_set('display_errors', 1);
                     ini_set('display_startup_errors', 1);
                     error_reporting(E_ALL);
+                    
+
+                    if(!empty($error))
+                    {
+                        echo $error;
+                        return;
+                    }
 
                     $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
                     $agent = str_replace(" ", "_", $_SERVER["HTTP_USER_AGENT"]);
                     $agent = str_replace(";", "-", $agent);
-                    $itemID = $_GET['iid'] ?? "";
                     $r = new Response(ResponseType::NONE, 0);
                     
                     if(array_key_exists("iid", $_GET))
@@ -140,7 +164,7 @@ h1 {
                                 echo '<div class="result-gap"></div>';
                                 echo '<div class="info-box">';
                                     echo '<center><h2>'. $r->results->name.'</h2>';
-                                    echo '<p class="fit">Item ID: '. $r->results->id. '</p>';
+                                    echo '<p class="fit" id="current_item_id" name="current_item_id">Item ID: '. $r->results->id. '</p>';
                                     echo '<p class="fit">Price: '. $r->results->price. '</p>';
                                     echo '<p class="fit">In-Store: '. ($r->results->in_store == "" ? "N/A" : $r->results->in_store) .'</p>';
                                     echo '<p class="fit">Store Price: '. ($r->results->store_price == "" ? "N/A" : $r->results->store_price). '</p>';
@@ -152,6 +176,7 @@ h1 {
 
                                     echo '<div class="form-group mb-4" style="margin-right:16px;display: inline-block;"><div class="col-sm-12">';
                                     echo '<input style="width: 200px;" type="submit" class="fit btn btn-success" id="price_btn" name="price_btn" value="Suggest"/>';
+                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="add2template" name="add2template" value="Add To Template"/>';
                                     echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="#" name="#" value="Request Price Check"/></div></div>';
 
                                     echo '<br/><div class="form-group mb-4" style="margin-right:16px;display: inline-block;"><div class="col-sm-12">';
@@ -338,7 +363,8 @@ h1 {
                     {
                         if($r->type == ResponseType::EXACT)
                         {
-                            echo '<br /><br />';
+                            echo '<br />';
+                            echo '<center><div style="width: 500px"><p>Please keep in mind that these prices below are not the suggested prices that Yoworld.Info. Suggested prices on Yoworld.Info are Unapproved prices. These prices below are approved and previous prices to the specific item which are hidden on their website!</p></div></center>';
                             echo '<div style="height: 50px;"></div>';
                             echo '<div class="log-box">';
                             echo '<center><h1>Yoworld.Info\'s Price Change History</h1>';

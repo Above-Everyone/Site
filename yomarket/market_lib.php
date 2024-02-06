@@ -1,7 +1,7 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
 require_once("objects/activity.php");
@@ -16,12 +16,14 @@ class Profiles
     /*
         API Endpoints
     */
-    const PROFILE_ENDPOINT      = "https://api.yomarket.info/profile?username=";
-    const AUTH_ENDPOINT         = "https://api.yomarket.info/profile/auth?username=";
-    const SETTINGS_ENDPOINT     = "https://api.yomarket.info/profile/edit/settings?data=";
-    const LIST_ADD_ENDPOINT     = "https://api.yomarket.info/profile/edit/add?username=";
-    const LIST_RM_ENDPOINT      = "https://api.yomarket.info/profile/edit/rm?username=";
-    CONST NEW_PROFILE_ENDPOINT  = "https://api.yomarket.info/profile/create?username=";
+    const API                   = "https://api.yomarket.info/";
+    const BACKUP_API            = "https://backup.yomarket.info/";
+    const PROFILE_ENDPOINT      = "https://backup.yomarket.info/profile?username=";
+    const AUTH_ENDPOINT         = "https://backup.yomarket.info/profile/auth?username=";
+    const SETTINGS_ENDPOINT     = "https://backup.yomarket.info/profile/edit/settings?data=";
+    const LIST_ADD_ENDPOINT     = "https://backup.yomarket.info/profile/edit/add?username=";
+    const LIST_RM_ENDPOINT      = "https://backup.yomarket.info/profile/edit/rm?username=";
+    CONST NEW_PROFILE_ENDPOINT  = "https://backup.yomarket.info/profile/create?username=";
     public $Response;
 
     public $profile;
@@ -31,10 +33,7 @@ class Profiles
         $parameters = array("ip" => $ip);
 
         if(!empty($viewed_by))
-        {
-            echo "HERE";
             $parameters = array("ip" => "$ip", "viewed_by" => "$viewed_by");
-        }
         
         $api_resp = sendReq(self::PROFILE_ENDPOINT. $user, $parameters);
 

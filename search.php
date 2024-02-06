@@ -135,8 +135,8 @@ table, th, td {
       <div class="col-12 mt-4">
         <div class="card mb-4">
           <div class="card-header pb-0 p-3">
-            <h6 class="mb-1">YoMarket</h6>
-            <p class="text-sm">The #1 Price Guide For Yoworld!</p>
+            <h6 class="mb-1">Item Search</h6>
+            <p class="text-sm">Enter an item name or ID!</p>
           </div>
           <div class="card-body p-3">
             <form method="post">
@@ -185,7 +185,7 @@ table, th, td {
                             echo '</div>';
                             echo '</div></form></center>';
                         } else if($r->type == ResponseType::EXTRA)
-                        { 
+                        {
                             echo '<a style="padding-left: 20px"><font color="000000">'. count($r->results). ' results found for '. $itemID. '!</font></a>';
                             echo '<div class="result_box" style="margin-left: 0px">';
                             echo '<div class="grid-container">';
