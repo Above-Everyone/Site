@@ -197,6 +197,8 @@ table, th, td {
                                 echo '<p style="font-size: 15px;color: #ff0000">#'. $item->id. '</p>';
                                 echo '<p style="font-size: 15px;color: #ff0000">Price: '. $item->price. '</p>';
                                 echo '<p style="font-size: 15px;color: #ff0000">Last Update: '. $item->update. '</p>';
+                                echo '<p style="font-size: 15px;color: #ff0000">Tradable: '. $item->is_tradable. '</p>';
+                                echo '<p style="font-size: 15px;color: #ff0000">In-Store: '. ($item->in_store == "0" ? "Yes":"No"). '</p>';
                                 echo '<div class="form-group mb-4" style="display: inline-block;"><div class="col-sm-12">';
                                 echo '<a class="fit btn btn-success" href="https://yomarket.info/more_info.php?iid='. $item->id. '">More Info</a>';
                                 echo '<input style="margin-left:5px;width: 200px;" type="submit" class="fit btn btn-success" id="#" name="#" value="Price Check"/></div></div>';
