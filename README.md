@@ -7,6 +7,7 @@
 
 <p>// Edit and add the 404 Redirection below for Profile Search</p>
 <p>// ErrorDocument 404 /profile.php</p>
+
 ```
 $ nano /etc/apache2/sites-enabled/000-default.conf
 ```
@@ -15,6 +16,8 @@ $ nano /etc/apache2/sites-enabled/000-default.conf
 <p>// 'Override None' to 'Override All'</p>
 
 <p>// Restart Apache</p>
+
 ```
 $ service apache2 restart
 ```
+
