@@ -11,6 +11,7 @@
 sudo apt-get install php-gd
 ```
 
+# Configure the profile search system
 
 <p>// Edit and add the 404 Redirection below for Profile Search</p>
 <p>ErrorDocument 404 /profile.php</p>
