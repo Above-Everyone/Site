@@ -15,6 +15,10 @@ $ nano /etc/apache2/sites-enabled/000-default.conf
 <p>// Edit and modify the AllowOverride line to the following directory tags below</p>
 <p>// 'Override None' to 'Override All'</p>
 
+```
+$ nano /etc/apache2/apache2.conf
+```
+
 <p>// Restart Apache</p>
 
 ```
