@@ -1,6 +1,6 @@
 <?php
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once("yomarket/market_lib.php");
 require_once("yomarket/objects/utils.php");
@@ -168,7 +168,7 @@ table, th, td {
               
             <?php
                 if(!empty($display_profile->results->yoworld_id)) {
-                  echo '<img src="https://yomarket.info/cropped_avi.php?URL=https://yw-web.yoworld.com/user/images/yo_avatars/000/'. substr($display_profile->results->yoworld_id, 0, 3). "/". substr($display_profile->results->yoworld_id, 3, 3)."/". $display_profile->results->yoworld_id. ".png" .'" alt="profile_image" class="w-100 border-radius-lg shadow-sm">';
+                  echo '<img src="https://yomarket.info/cropped_avi.php?URL=https://yw-web.yoworld.com/user/images/yo_avatars/000/'. substr($display_profile->results->yoworld_id, 0, 3). "/". substr($display_profile->results->yoworld_id, 3, 3)."/". $display_profile->results->yoworld_id. '.png" alt="profile_image" class="w-100 border-radius-lg shadow-sm">';
                 }
                 ?>
             </div>

@@ -20,7 +20,7 @@
             return;
         }
 
-        if(!ctype_alpha($ym_uname) || !(int)$ym_uname > 0)
+        if(!ctype_alpha($ym_uname) || !(int)$ym_ywid > 0)
         {
             echo '<center><p>Invalid info provided!<br />'. $ym_uname. ' | '. $ym_passwd. ' | '. $ym_ywid. '</p></center>';
             return;

@@ -1,6 +1,6 @@
 <?php
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once("items.php");
@@ -70,7 +70,7 @@ enum Activity_T
     
     public static function isActValid(string $q): bool 
     {
-        $check = array("item_sold", "item_bought", "item_viewed", "price_change", "fs_posted", "wtb_posted", "logged_in");
+        $check = array("item_sold", "item_bought", "item_viewed", "price_change", "fs_posted", "wtb_posted", "logged_in", "invo_posted");
         if(in_array($q, $check))
             return true;
 

@@ -109,9 +109,11 @@ if(!empty($info)) {
                 <span>Profiles</span>
                 <div class="dropdown-content">
                   <?php if(!empty($info)) echo '<a href="https://yomarket.info/@'. $profile->username. '">View My Profile</a><div class="dropdown-gap"></div>'; ?>
-                  <a href="#">Search Profile</a>
+                  <a href="find_profile.php">Search Profile (NEW)</a>
                   <div class="dropdown-gap"></div>
-                  <a href="#">Search For Item Sellers</a>
+                  <?php if(!empty($info)) {
+                    echo '<a href="market.php">Market Place (NEW) </a>'; }
+                  ?>
                 </div>
               </div>
             </li>

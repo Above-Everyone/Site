@@ -166,6 +166,20 @@ table, th, td {
                 <img src="https://yoworld.com/images/icon.ico" alt="kal" class="border-radius-lg shadow">
               </div>
               <div class="d-flex align-items-start flex-column justify-content-center">
+                <h6 class="mb-0 text-sm">Template System</h6>
+                <p style="font-size: 15px;">The template system is done, For more information.. Join our discord for help!</a></p>
+                </div>
+              <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="#">Jan 18, 2024</a>
+            <span style="align: center; right: 0;"class="badge bg-success rounded">- YoMarket Owner</span>
+            </li>
+          </div>
+          
+          <div class="card-body p-3">
+            <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
+              <div class="avatar me-3">
+                <img src="https://yoworld.com/images/icon.ico" alt="kal" class="border-radius-lg shadow">
+              </div>
+              <div class="d-flex align-items-start flex-column justify-content-center">
                 <h6 class="mb-0 text-sm">Profile System has been added!</h6>
                 <p style="font-size: 15px;">We're glad to announce our new Profile system that will help everyone keep track of items by adding them to your Inventory, FS, or WTB list which are listed on your profile for everyone to see!<br />
                 Profiles include an optional 'contact info' section that you can edit to fix so yoworld players are able to contact you on messaging platforms about items you have listed on your profile!</a></p>

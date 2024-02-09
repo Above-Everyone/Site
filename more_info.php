@@ -1,31 +1,16 @@
 <?php
+/* Reporting all errors */
 
-require_once("yomarket/template.php");
-require_once("yomarket/market_lib.php");
-require_once("yomarket/objects/utils.php");
+require_once("page_handlers/more_info_h.php");
 
+/* User Profile & Information Tracking */
+$ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? "";
+$agt = $_SERVER["HTTP_USER_AGENT"] ?? "";
+$agent = str_replace(" ", "_", $agt);
+$agent = str_replace(";", "-", $agent);
+
+$id = $_GET['iid'] ?? "";
 $info = $_COOKIE['ym_user_info'] ?? "";
-$MORE_INFO_PAGE_PROFILE = "";
-$error = "";
-
-$itemID = $_GET['iid'] ?? "";
-if(!empty($info)) { 
-    $MORE_INFO_PAGE_PROFILE = new Profile($info);
-}
-
-if(array_key_exists("add2template", $_POST)) 
-{
-    $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
-    if(empty($itemID) || empty($n_price))
-    $error = "Missing fields...!";
-
-    if($n_price === "reset") {
-        TemplateGenerator::rmTemplateCookie();
-        $error = "Template successfully reset!";
-    }
-
-    echo TemplateGenerator::addItem2Template($itemID, $n_price);
-}
 
 ?>
 <!DOCTYPE html>
@@ -127,233 +112,67 @@ h1 {
           </div>
           <div class="card-body p-3">
                 <?php
-                    ini_set('display_errors', 1);
-                    ini_set('display_startup_errors', 1);
-                    error_reporting(E_ALL);
                     
-
-                    if(!empty($error))
-                    {
-                        echo $error;
-                        return;
+                    /*
+                        Always search for item to display
+                    */
+                    if(array_key_exists('iid', $_GET)) {
+                        run_search_handler($id, $ip, $agent);
                     }
 
-                    $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
-                    $agent = str_replace(" ", "_", $_SERVER["HTTP_USER_AGENT"]);
-                    $agent = str_replace(";", "-", $agent);
-                    $r = new Response(ResponseType::NONE, 0);
-                    
-                    if(array_key_exists("iid", $_GET))
-                    {
-                        if(!isset($_GET['iid']) || empty($itemID))
-                            die("[ X ] Fill out GET parameters to continue...!");
-                            
-                        $items = new Items();
-                        $r = $items->searchItem($itemID, $ip."&agent=". $agent);
-
-                        if($r->type == ResponseType::REQ_FAILED || $r->type == ResponseType::NONE)
-                        {
-                            echo "<center><p>Error, Unable to connect to YoMarket's API. Please try again (Try using all lowercase)</p><br /><p>This is a common bug we are working on fixing....!</p><center>";
-                        } else if($r->type == ResponseType::EXACT)
-                        {
-                            echo '<div class="result-box">';
-                                echo '<div class="img-box">';
-                                echo '<center><img width="200" height="200" src="'. $r->results->url. '"/></center>';
-                                echo '</div>';
-
-                                echo '<div class="result-gap"></div>';
-                                echo '<div class="info-box">';
-                                    echo '<center><h2>'. $r->results->name.'</h2>';
-                                    echo '<p class="fit" id="current_item_id" name="current_item_id">Item ID: '. $r->results->id. '</p>';
-                                    echo '<p class="fit">Price: '. $r->results->price. '</p>';
-                                    echo '<p class="fit">In-Store: '. ($r->results->in_store == "0" ? "Yes":"No"). '</p>';
-                                    echo '<p class="fit">Store Price: '. ($r->results->store_price == "" ? "N/A" : $r->results->store_price). '</p>';
-                                    echo '<p class="fit">Gender: '. ($r->results->gender == "" ? "N/A" : $r->results->gender). '</p>';
-                                    echo '<p class="fit">XP: '. ($r->results->xp == "" ? "N/A" : $r->results->xp). '</p>';
-                                    echo '<p class="fit">Category: '. ($r->results->category == "" ? "N/A" : $r->results->category). '</p>';
-                            
-                                    echo '<form method="post"><div class="mb-3"><input type="text" class="form-control" style="width: 400px;padding: 10px;" placeholder="Price (ex: 2m)" aria-label="Name" aria-describedby="email-addon" id="new_price" name="new_price"></div>';
-
-                                    echo '<div class="form-group mb-4" style="margin-right:16px;display: inline-block;"><div class="col-sm-12">';
-                                    echo '<input style="width: 200px;" type="submit" class="fit btn btn-success" id="price_btn" name="price_btn" value="Suggest"/>';
-                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="add2template" name="add2template" value="Add To Template"/>';
-                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="#" name="#" value="Request Price Check"/></div></div>';
-
-                                    echo '<br/><div class="form-group mb-4" style="margin-right:16px;display: inline-block;"><div class="col-sm-12">';
-                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="add_to_invo" name="add_to_invo" value="Add To Invo"/>';
-                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="add_to_fs" name="add_to_fs" value="Add To FS"/>';
-                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="add_to_wtb" name="add_to_wtb" value="Add To WTB"/></div></div>';
-
-                                    echo '<br/><div class="form-group mb-4" style="margin-right:16px;display: inline-block;"><div class="col-sm-12">';
-                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="rm_from_invo" name="rm_from_invo" value="Remove From Invo"/>';
-                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="rm_from_fs" name="rm_from_fs" value="Remove From FS"/>';
-                                    echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="rm_from_wtb" name="rm_from_wtb" value="Remove From WTB"/></div></div>';
-                                echo '</center></div>';
-                            echo '</div></form>';
-                        } else {
-                            echo "[ X ] Error, No item was found...!";
-                        }
-                    } else {
-                        die("[ X ] No Item ID Provided To Search For Item Information....!");
-                    }
 
                     /*
-                        Price Change Handler & Profile Event Handler
+                        Price Change Handler
                     */
                     if(array_key_exists("price_btn", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
-                        $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
+                        $n_price = $_POST['new_price'] ?? "0";
+                        price_change_handler($id, $n_price, $info, $ip, $agent);
+                    }
 
-                        if(!isset($_GET['iid']) || empty($itemID))
-                            die("[ X ] Fill out GET parameters to continue...!");
-                        
-                        $items = new Items();
-                        $r = $items->searchItem($itemID, $ip."&agent=". $agent);
-
-                        if(empty($info)) {
-                            echo "<center><p>Error, You must be signed in to suggest a price!</p></center>";
-                            return;
-                        }
-
-                        if(!in_array(Badges::ADMIN, $MORE_INFO_PAGE_PROFILE->badges) && !in_array(Badges::OWNER, $MORE_INFO_PAGE_PROFILE->badges)) {
-                            echo "<center><p>Error, You Aren't an admin to change prices! </p><center>";
-                            return;
-                        }
-                        
-                        if($r->type != ResponseType::EXACT) {
-                            echo "<center><p>Error, Unable to find item!<br />Something went wrong. Contact an admin!</p><center>";
-                            return;
-                        }
-
-                        $change_r = $items->changePrice($r->results, $n_price, $MORE_INFO_PAGE_PROFILE->username, $ip);
-                        
-                        if($change_r->type == ResponseType::ITEM_UPDATED)
-                        {
-                            // $format = YoGuide::format_change_log($ip, $itemID, $r->result->price, $n_price);
-                            // YoGuide::send_post_req((new YoGuide())->CHANGE_LOG_URL, $format);
-                            echo "<center><p>Item ". $r->results->name. " successfully updated....!</p><center>";
-                        }
-                    } else if(array_key_exists("add_to_fs", $_POST))
+                    /*
+                        Add to Template Handler
+                    */
+                    if(array_key_exists('add2template', $_POST) && array_key_exists('new_price', $_POST)) 
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
-                        $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
+                        $n_price = $_POST['new_price'] ?? "0";
+                        add2template_handler($id, $n_price, $info, $ip);
+                    }
 
-                        if(!isset($_GET['iid']) || empty($itemID) || empty($n_price))
-                            die("<center><p>[ X ] Fill out GET parameters to continue...!</p></center>");
-
-                        if(empty($info)) {
-                            echo "<center><p>Error, You must be signed in to use this!</p></center>";
-                            return;
-                        }
-                        $action_check = (new Profiles($MORE_INFO_PAGE_PROFILE->username))->addItem($MORE_INFO_PAGE_PROFILE->username, $MORE_INFO_PAGE_PROFILE->password, $ip, $itemID, $n_price, Settings_T::add_to_fs);
-                        
-                        if($action_check->type != ResponseType::REQ_SUCCESS) {
-                            echo "<center><p>Action Failed<br />Contact an admin for more info!</p></center>";
-                            return; }
-
-                        echo "<center><p>Action Successfully completed!</p></center>";
-                        return;
-                    } else if(array_key_exists("add_to_wtb", $_POST))
+                    /*
+                        Profile item List Handler
+                    */
+                    if(array_key_exists("add_to_fs", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
-                        $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
+                        $n_price = $_POST['new_price'] ?? "0";
+                        add2fs_handler($id, $n_price, $info, $ip);
+                    }
 
-                        if(!isset($_GET['iid']) || empty($itemID) || empty($n_price))
-                            die("<center><p>[ X ] Fill out GET parameters to continue...!</p></center>");
-
-                        if(empty($info)) {
-                            echo "<center><p>Error, You must be signed in to use this!</p></center>";
-                            return;
-                        }
-                        $action_check = (new Profiles($MORE_INFO_PAGE_PROFILE->username))->addItem($MORE_INFO_PAGE_PROFILE->username, $MORE_INFO_PAGE_PROFILE->password, $ip, $itemID, $n_price, Settings_T::add_to_wtb);
-                        
-                        if($action_check->type != ResponseType::REQ_SUCCESS) {
-                            echo "<center><p>Action Failed<br />Contact an admin for more info!</p></center>";
-                            return; }
-
-                        echo "<center><p>Action Successfully completed!</p></center>";
-                        return;
-                    } else if(array_key_exists("rm_from_fs", $_POST))
+                    if(array_key_exists("rm_from_fs", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
-                        $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
-
-                        if(!isset($_GET['iid']) || empty($itemID))
-                            die("<center><p>[ X ] Fill out GET parameters to continue...!</p></center>");
-                        
-                        if(empty($info)) {
-                            echo "<center><p>Error, You must be signed in to use this!</p></center>";
-                            return;
-                        }
-                        $action_check = (new Profiles($MORE_INFO_PAGE_PROFILE->username))->rmItem($MORE_INFO_PAGE_PROFILE->username, $MORE_INFO_PAGE_PROFILE->password, $ip, $itemID, Settings_T::rm_from_fs);
-                        
-                        if($action_check->type != ResponseType::REQ_SUCCESS) {
-                            echo "<center><p>Action Failed<br />Contact an admin for more info!</p></center>";
-                            return; }
-
-                        echo "<center><p>Action Successfully completed!</p></center>";
-                        return;
-                    } else if(array_key_exists("rm_from_wtb", $_POST))
+                        rmfromfs_handler($id, $info, $ip);
+                    }
+                    
+                    if(array_key_exists("add_to_wtb", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
-                        $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
+                        $n_price = $_POST['new_price'] ?? "0";
+                        add2wtb_handler($id, $n_price, $info, $ip);
+                    } 
 
-                        if(!isset($_GET['iid']) || empty($itemID))
-                            die("<center><p>[ X ] Fill out GET parameters to continue...!</p></center>");
-
-                        if(empty($info)) {
-                            echo "<center><p>Error, You must be signed in to use this!</p></center>";
-                            return;
-                        }
-                        $action_check = (new Profiles($MORE_INFO_PAGE_PROFILE->username))->rmItem($MORE_INFO_PAGE_PROFILE->username, $MORE_INFO_PAGE_PROFILE->password, $ip, $itemID, Settings_T::rm_from_wtb);
-                        
-                        if($action_check->type != ResponseType::REQ_SUCCESS) {
-                            echo "<center><p>Action Failed<br />Contact an admin for more info!</p></center>";
-                            return; }
-
-                        echo "<center><p>Action Successfully completed!</p></center>";
-                        return;
-                    } else if(array_key_exists("add_to_invo", $_POST))
+                    if(array_key_exists("rm_from_wtb", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
-                        $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
-
-                        if(!isset($_GET['iid']) || empty($itemID))
-                            die("<center><p>[ X ] Fill out GET parameters to continue...!</p></center>");
-
-                        if(empty($info)) {
-                            echo "<center><p>Error, You must be signed in to use this!</p></center>";
-                            return;
-                        }
-                        $action_check = (new Profiles($MORE_INFO_PAGE_PROFILE->username))->addItem($MORE_INFO_PAGE_PROFILE->username, $MORE_INFO_PAGE_PROFILE->password, $ip, $itemID, "", Settings_T::add_to_invo);
-                        
-                        if($action_check->type != ResponseType::REQ_SUCCESS) {
-                            echo "<center><p>Action Failed<br />Contact an admin for more info!</p></center>";
-                            return; }
-
-                        echo "<center><p>Action Successfully completed!</p></center>";
-                        return;
-                    } else if(array_key_exists("rm_from_invo", $_POST))
+                        rmfromwtb_handler($id, $info, $ip);
+                    }
+                    
+                    if(array_key_exists("add_to_invo", $_POST))
                     {
-                        $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'];
-                        $n_price = $_POST['new_price'] == "" ? "0": $_POST['new_price'];
-
-                        if(!isset($_GET['iid']) || empty($itemID))
-                            die("<center><p>[ X ] Fill out GET parameters to continue...!</p></center>");
-
-                        if(empty($info)) {
-                            echo "<center><p>Error, You must be signed in to use this!</p></center>";
-                            return;
-                        }
-                        $action_check = (new Profiles($MORE_INFO_PAGE_PROFILE->username))->rmItem($MORE_INFO_PAGE_PROFILE->username, $MORE_INFO_PAGE_PROFILE->password, $ip, $itemID, Settings_T::rm_from_invo);
-                        
-                        if($action_check->type != ResponseType::REQ_SUCCESS) {
-                            echo "<center><p>Action Failed<br />Contact an admin for more info!</p></center>";
-                            return; }
-
-                        echo "<center><p>Action Successfully completed!</p></center>";
-                        return;
+                        add2invo_handler($id, $info, $ip);
+                    }
+                    
+                    
+                    if(array_key_exists("rm_from_invo", $_POST))
+                    {
+                        rmfrominvo_handler($id, $info, $ip);
                     }
 
                     /*
@@ -361,23 +180,7 @@ h1 {
                     */
                     if(array_key_exists("iid", $_GET))
                     {
-                        if($r->type == ResponseType::EXACT)
-                        {
-                            echo '<br />';
-                            echo '<center><div style="width: 500px"><p>Please keep in mind that these prices below are not the suggested prices that Yoworld.Info. Suggested prices on Yoworld.Info are Unapproved prices. These prices below are approved and previous prices to the specific item which are hidden on their website!</p></div></center>';
-                            echo '<div style="height: 50px;"></div>';
-                            echo '<div class="log-box">';
-                            echo '<center><h1>Yoworld.Info\'s Price Change History</h1>';
-                            foreach($r->results->ywinfo_prices as $price) 
-                            {
-                                echo '<div stlye="display: inline-block">';
-                                echo '<p class="fit-price">Price: '. $price->price. ' | </p>';
-                                echo '<p class="fit-price">Update: '. $price->timestamp. '</p>';
-                                echo '</div>';
-                            }
-                            echo '</center></div>';
-                            echo '</div>';
-                        }
+                        list_yw_info_price();
                     }
                 ?>
           </div>

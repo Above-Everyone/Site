@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once("objects/response.php");
 
@@ -25,6 +28,9 @@ class TemplateGenerator
 
         return (new Response(ResponseType::NONE, $api_resp));
     }
+
+    public static function dieTemplate(): bool 
+    { setcookie("ym_template_info", "", time() - 300, "/", null, false, true); unset($_COOKIE['ym_template_info']); }
 
     public static function addItem2Template(string $id, string $price): bool 
     {

@@ -1,7 +1,7 @@
 <?php
+require_once("yomarket/market_lib.php");
+require_once("yomarket/objects/response.php");
 
-
-include_once("yomarket.php");
-
-var_dump($_COOKIE);
+$r = (new Profiles())->searchProfile("billy", "5.5.5.5");
+var_dump($r);
 ?>

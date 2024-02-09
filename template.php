@@ -14,8 +14,8 @@
 -->
 <?php
 
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once("yomarket/template.php");
@@ -34,7 +34,6 @@ $agent = str_replace(" ", "_", $agt);
 $agent = str_replace(";", "-", $agent);
 
 $cookie_items = $_COOKIE['ym_template_info'] ?? "";
-var_dump($cookie_items);
 $items = explode(",", $cookie_items);
 ?>
 <!DOCTYPE html>
@@ -165,6 +164,7 @@ table, th, td {
           </div>
           <div class="card-body p-3">
             <div class="row">
+              
                 <?php
                   if(!empty($info)) {
                     echo '<center><img style="width: 500px;height: 300px;" src="https://backup.yomarket.info/get_template?name='. $MORE_INFO_PAGE_PROFILE->username. '"></center>';
@@ -172,13 +172,20 @@ table, th, td {
                   
                   if(!empty($cookie_items))
                   {
-                    echo '<center><form method="post"><div class="form-group mb-4"><div class="col-sm-12"><input type="submit" class="btn btn-success" style="width: 100mw" id="generate_template" name="generate_template" value="Generate Current Template"/></div></div></form></center>';
+                    echo '<center><form method="post"><div class="form-group mb-4"><div class="col-sm-12">';
+                    echo '<input type="submit" class="btn btn-success" style="width: 100mw" id="generate_template" name="generate_template" value="Generate Current Template"/><div style="display: inline-block;width: 10px; background-color: transparent;"></div>';
+                    echo '<input type="submit" class="btn btn-success" style="width: 100mw" id="reset_template" name="reset_template" value="Reset Template Items"/>';
+                    echo '</div></div></form></center>';
+                  }
+
+                  if(array_key_exists('reset_template', $_POST))
+                  {
+                    TemplateGenerator::dieTemplate();
                   }
 
                   if(array_key_exists('generate_template', $_POST))
                   {
                     $check = TemplateGenerator::GenerateTemplate($cookie_items, $MORE_INFO_PAGE_PROFILE->username);
-                    var_dump($check);
                     if($check->type == ResponseType::REQ_SUCCESS) {
                       echo '<center><p>Template Generated</p></center>';
                     }
