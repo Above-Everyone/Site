@@ -87,7 +87,7 @@
                   <p class="mb-0">Enter your username and password to sign in</p>
                 </div>
                 <div class="card-body p-3">
-                  <form action="login.inc.php" method="post">
+                  <form action="page_handlers/login_h.php" method="post">
                       <div class="mb-3"><input type="text" class="form-control" placeholder="Username" aria-label="Name" aria-describedby="email-addon" id="ym_username" name="ym_username"></div><br />
                       <div class="mb-3"><input type="password" class="form-control" placeholder="Password" aria-label="Name" aria-describedby="email-addon" id="ym_password" name="ym_password"></div><br />
                       <div class="form-group mb-4"><div class="col-sm-12"><input type="submit" class="btn btn-success" style="width: 100mw" id="ym_login" name="ym_login" value="Login"/></div></div>

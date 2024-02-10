@@ -173,7 +173,7 @@ font-size: 20px;
                     echo '<td>';
                     echo '<div class="d-flex px-2 py-1">';
                     echo '<div>';
-                    echo '<img src="'. $t. '" class="avatar avatar-sm me-3" alt="user1">';
+                    echo '<a href="https://yomarket.info/more_info.php?iid='. $log->item_id. '"><img src="'. $t. '" class="avatar avatar-sm me-3" alt="user1"></a>';
                     echo '</div>';
                     echo '<div class="d-flex flex-column justify-content-center">';
                     echo '<p class="text-xs text-secondary mb-0">'. $log->item_id. '</p>';

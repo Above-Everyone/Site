@@ -1,7 +1,7 @@
 <?php
 /* Reporting all errors */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
 require_once("yomarket/template.php");
@@ -26,7 +26,7 @@ function check_for_profile(string $cookie): Profile
     return $MORE_INFO_PAGE_PROFILE;
 }
 
-function run_search_handler(string $itemID, string $ip, string $agent): void
+function run_search_handler(string $itemID, string $ip, string $agent, string $cookie): void
 {
     global $r;
     $r = new Response(ResponseType::NONE, 0);
@@ -34,6 +34,21 @@ function run_search_handler(string $itemID, string $ip, string $agent): void
     /* Input Sanitizing */
     if(empty($itemID)) {
         echo "[ X ] Fill out GET parameters to continue...!";
+    }
+
+    $profile = check_for_profile($cookie);
+    $owner = false;
+    $admin = false;
+
+    /*
+    Checking to see if user is signed in
+    */
+    if(in_array(Badges::ADMIN, $profile->badges)) {
+        $admin = true; 
+    }
+
+    if(in_array(Badges::OWNER, $profile->badges)) {
+        $owner = true;
     }
                           
     /* Item Searching */
@@ -63,7 +78,11 @@ function run_search_handler(string $itemID, string $ip, string $agent): void
         echo '<form method="post"><div class="mb-3"><input type="text" class="form-control" style="width: 400px;padding: 10px;" placeholder="Price (ex: 2m)" aria-label="Name" aria-describedby="email-addon" id="new_price" name="new_price"></div>';
 
         echo '<div class="form-group mb-4" style="margin-right:16px;display: inline-block;"><div class="col-sm-12">';
-        echo '<input style="width: 200px;" type="submit" class="fit btn btn-success" id="price_btn" name="price_btn" value="Suggest"/>';
+        if($admin) {
+            echo '<input style="width: 200px;" type="submit" class="fit btn btn-success" id="price_btn" name="price_btn" value="Change Price"/>';
+        } else {
+            echo '<input style="width: 200px;" type="submit" class="fit btn btn-success" id="price_btn" name="price_btn" value="Suggest"/>';
+        }
         echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="add2template" name="add2template" value="Add To Template"/>';
         echo '<input style="margin-left:16px;width: 200px;" type="submit" class="fit btn btn-success" id="#" name="#" value="Request Price Check"/></div></div>';
 
@@ -307,7 +326,9 @@ function list_yw_info_price()
         {
             echo '<div stlye="display: inline-block">';
             echo '<p class="fit-price">Price: '. $price->price. ' | </p>';
-            echo '<p class="fit-price">Update: '. $price->timestamp. '</p>';
+            echo '<p class="fit-price">Update: '. $price->timestamp. ' | </p>';
+            echo '<p class="fit-price">Approved: '. $price->approve. ' | </p>';
+            echo '<p class="fit-price">Approved By: '. $price->approved_by. ' | </p>';
             echo '</div>';
         }
         echo '</center></div>';

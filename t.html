@@ -1,71 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<html>
     <style>
-        .profile-box {
-            display: flex;
-            border: 1px solid #000;
+        .fit {
+            color: #000;
+            box-sizing: border-box;
+        }
+        .fit-price {
+            color: #000;
+            box-sizing: border-box;
+            display: inline-block;
+        }
+        table, th, td {
+          border:1px solid black;
+        }
+        
+        .wrap-box {
+            border-color: #fff;
+            border-style: solid;
+            padding: 50px;
+            margin: 50px;
+            align-items: center;
+        }
+        .result-box {
+          border: 5px solid;
+          border-color: #fff;
+          margin: auto;
+          width: 100mw;
+          height: 100mh;
+          padding: 10px;
+        }
+        .img-box {
+            align: center;
+            border-color: #fff;
+            border-style: solid;
+            margin: auto;
+            width: 100mw;
+            height: 100mh;
             padding: 10px;
-            width: 400px;
-            margin: 0 auto;
         }
-        .profile-pic {
-            flex: 1;
-        }
-        .profile-pic img {
-            width: 100%;
-            height: 100%;
-        }
-        .profile-info {
-            flex: 2;
-            margin-left: 10px;
-        }
-        .badges {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .badge {
+        .result-gap {
             width: 50px;
-            height: 50px;
-            margin-right: 5px;
-            margin-top: 5px;
-            border-color: transparent;
-            border-style: solid;
+            height: 80px;
         }
-        .badge:hover {
+        .info-box {
+            border-color: #fff;
             border-style: solid;
-            border-color: #ff0000;
+            margin: auto;
+            width: 100mw;
+            height: 100mh;
+            padding: 10px;
+            box-sizing: border-box;
         }
-        .verified_badge {
-            width: 120px;
-            height: 50px;
-            margin-right: 5px;
-            margin-top: 5px;
-            border-color: transparent;
-            border-style: solid;
+        h1 {
+            font-size: 20px;
+            color: #cb0c9f;
         }
-        .verified_badge:hover {
-            border-style: solid;
-            border-color: #ff0000;
-        }
+        
     </style>
-</head>
-<body>
+        
     <div class="profile-box">
         <div class="profile-pic">
-            <img src="https://yomarket.info/cropped_avi.php?URL=https://yw-web.yoworld.com/user/images/yo_avatars/000/187/753/187753659.png" alt="Profile Picture">
+            <a href="http://yomarket.info/@'. $owner"><img src="https://yomarket.info/page_handlers/cropped_avi_h.php?URL=https://yw-web.yoworld.com/user/images/yo_avatars/000/187/753/187753659.png" alt="Profile Picture"></a>
         </div>
         <div class="profile-info">
-            <h2>User Name</h2>
+            <h2>$owner</h2>
             <div class="badges">
-                <img class="badge" src="https://puu.sh/K0a7Q/eab17f939a.png" alt="Badge 1">
-                <img class="badge" src="https://puu.sh/K0a7Q/eab17f939a.png" alt="Badge 2">
-                <img class="verified_badge" src="https://yomarket.info/t.png" alt="Badge 3">
+                <!--
+                    Set Badge On User's View Card 
+                -->
+                <img class="verified_badge" src="https://puu.sh/K0a7Q/eab17f939a.png" alt="Badge 1"/>
+                <img class="admin_badge" src="https://puu.sh/K0ttu/941ecd1542.png" alt="Badge 2"/>
+                <img class="trusted_badge" src="https://yomarket.info/t.png" alt="Badge 2"/>
             </div>
         </div>
     </div>
-</body>
 </html>

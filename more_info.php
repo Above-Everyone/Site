@@ -2,6 +2,7 @@
 /* Reporting all errors */
 
 require_once("page_handlers/more_info_h.php");
+require_once("yomarket/market_lib.php");
 
 /* User Profile & Information Tracking */
 $ip = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? "";
@@ -117,7 +118,7 @@ h1 {
                         Always search for item to display
                     */
                     if(array_key_exists('iid', $_GET)) {
-                        run_search_handler($id, $ip, $agent);
+                        run_search_handler($id, $ip, $agent, $info);
                     }
 
 

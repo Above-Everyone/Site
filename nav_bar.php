@@ -6,12 +6,22 @@ require_once("yomarket/template.php");
 
 $info = $_COOKIE['ym_user_info'] ?? "";
 $profile;
+$owner = false;
 $admin = false;
 
+/*
+  Checking to see if user is signed in
+*/
 if(!empty($info)) { 
   $profile = new Profile($info);
+  
   if(in_array(Badges::ADMIN, $profile->badges)) {
-    $admin = true; }
+    $admin = true; 
+  }
+
+  if(in_array(Badges::OWNER, $profile->badges)) {
+    $owner = true;
+  }
 }
 ?>
 <style>
@@ -72,12 +82,12 @@ if(!empty($info)) {
 }
 
 </style>
-
-<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+<div style="height: 10px; background-color: transparent"></div>
+<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true" style="background-color: #555555">
       <div class="container-fluid py-1 px-3" style="padding-right: 10%;">
         <nav aria-label="breadcrumb" style="padding-right: 30px;">
-          <h1>YoMarket</h1>
-            <p class="text-sm">The #1 Price Guide For Yoworld!</p>
+          <h1 style="color: #cb0c9f">YoMarket</h1>
+            <p class="text-sm" style="color: #cb0c9f">The #1 Price Guide For Yoworld!</p>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
 
@@ -165,6 +175,7 @@ if(!empty($info)) {
           </ul>
         </div>
 
+        <div class="nav_gap"></div>
         
         <?php
           if(empty($info)) {
@@ -177,7 +188,21 @@ if(!empty($info)) {
             echo '</li>';
             echo '</ul>';
           } else {
-            
+            if($admin) {
+              echo '<ul class="navbar-nav justify-content-end">';
+              echo '<li class="nav-item d-flex align-items-center">';
+              echo '<div class="dropdown">';
+              echo '<span>Admin Panel</span>';
+              echo '<div class="dropdown-content">';
+              echo '<a href="admin_index.php">Suggested Prices</a>';
+              echo '<div class="dropdown-gap"></div>';
+              echo '<a href="market.php">Request Price Checks</a>';
+              echo '</div>';
+              echo '</div>';
+              echo '</li>';
+              echo '</ul><div style="width: 15px;background-color: transparent;"></div>';
+            }
+
             echo '<ul class="navbar-nav  justify-content-end" style="padding-right: 20px;" >';
             echo '<li class="nav-item d-flex align-items-center">';
             echo '  <a href="https://yomarket.info/@'. $profile->username. '" class="nav-link text-body font-weight-bold px-0">';
